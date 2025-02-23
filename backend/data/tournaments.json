@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1740303545047,
+    "board1SocketId": "vRfEr2hTxe_HSnJXAAAF",
+    "board2SocketId": "FkcVnSza9DP-iRFLAAAH",
+    "players": [
+      {
+        "id": 2,
+        "name": "Jannis"
+      },
+      {
+        "id": 3,
+        "name": "Fynn"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 6,
+        "name": "Carsten K."
+      },
+      {
+        "id": 5,
+        "name": "Janis"
+      },
+      {
+        "id": 1,
+        "name": "Timo"
+      }
+    ],
+    "pointsGroup": 301,
+    "pointsSemifinal": 501,
+    "pointsFinal": 501,
+    "legsGroup": 1,
+    "legsSemifinal": 1,
+    "legsFinal": 2,
+    "groups": {
+      "A": [
+        {
+          "id": 2,
+          "name": "Jannis"
+        },
+        {
+          "id": 3,
+          "name": "Fynn"
+        },
+        {
+          "id": 4,
+          "name": "Luca"
+        }
+      ],
+      "B": [
+        {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        {
+          "id": 5,
+          "name": "Janis"
+        },
+        {
+          "id": 1,
+          "name": "Timo"
+        }
+      ]
+    },
+    "matches": {
+      "groupStage": [
+        {
+          "player1": {
+            "id": 2,
+            "name": "Jannis"
+          },
+          "player2": {
+            "id": 3,
+            "name": "Fynn"
+          },
+          "board": 1,
+          "winner": {
+            "id": 3,
+            "name": "Fynn"
+          }
+        },
+        {
+          "player1": {
+            "id": 2,
+            "name": "Jannis"
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "board": 1,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 3,
+            "name": "Fynn"
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "board": 1,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 6,
+            "name": "Carsten K."
+          },
+          "player2": {
+            "id": 5,
+            "name": "Janis"
+          },
+          "board": 2,
+          "winner": {
+            "id": 5,
+            "name": "Janis"
+          }
+        },
+        {
+          "player1": {
+            "id": 6,
+            "name": "Carsten K."
+          },
+          "player2": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "board": 2,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 5,
+            "name": "Janis"
+          },
+          "player2": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "board": 2,
+          "winner": null
+        }
+      ],
+      "semiFinals": [
+        {
+          "player1": null,
+          "player2": null,
+          "winner": null,
+          "board": 1
+        },
+        {
+          "player1": null,
+          "player2": null,
+          "winner": null,
+          "board": 2
+        }
+      ],
+      "final": {
+        "player1": null,
+        "player2": null,
+        "winner": null,
+        "board": 1
+      }
+    },
+    "status": "groupStage"
+  }
+]
