@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
+const TournamentStatus = require("../interfaces/tournamentInterface");
 
 const tournamentsFilePath = path.join(__dirname, "../data/tournaments.json");
 
@@ -86,23 +87,17 @@ const createTournament = async (tournamentCreationData) => {
     legsFinal,
   } = tournamentCreationData;
 
-  console.log(players);
-
-  // Spieler mischen und in zwei Gruppen aufteilen
   const shuffledPlayers = shuffleArray(players);
   const mid = Math.ceil(shuffledPlayers.length / 2);
   const groupA = shuffledPlayers.slice(0, mid);
   const groupB = shuffledPlayers.slice(mid);
 
-  // Gruppen-Spiele generieren (Gruppe A auf Board 1, Gruppe B auf Board 2)
   const groupMatchesA = generateGroupMatches(groupA, 1);
   const groupMatchesB = generateGroupMatches(groupB, 2);
 
-  // Spiele ausbalancieren (abwechselnde Spieler sicherstellen)
   const balancedGroupMatchesA = balanceMatches(groupMatchesA);
   const balancedGroupMatchesB = balanceMatches(groupMatchesB);
 
-  // Neues Turnier-Objekt
   const newTournament = {
     id: Date.now(),
     board1SocketId: null,
@@ -126,7 +121,7 @@ const createTournament = async (tournamentCreationData) => {
       ],
       final: { player1: null, player2: null, winner: null, board: 1 },
     },
-    status: "open",
+    status: TournamentStatus.OPEN,
   };
 
   // Bestehende Turniere laden (Datei lesen)
@@ -143,14 +138,8 @@ const createTournament = async (tournamentCreationData) => {
 const openTournaments = async () => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   const tournaments = JSON.parse(data);
-  return tournaments.filter((tournament) => tournament.status === "open");
-};
-
-const getTournamentById = async (tournamentId) => {
-  const data = await fs.readFile(tournamentsFilePath, "utf8");
-  const tournaments = JSON.parse(data);
-  return tournaments.find(
-    (tournament) => tournament.id === Number(tournamentId)
+  return tournaments.filter(
+    (tournament) => tournament.status === TournamentStatus.OPEN
   );
 };
 
@@ -158,145 +147,132 @@ const startTournament = async (tournamentId, room) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
 
-  console.log(room);
-
-  // Turnier anhand der ID finden
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
 
-  // Status aktualisieren
-  tournament.status = "groupStage";
+  tournament.status = TournamentStatus.GROUP_STAGE;
   tournament.board1SocketId = [...room][0];
   tournament.board2SocketId = [...room][1];
 
-  // Datei mit aktualisierten Turnieren speichern
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
 };
 
-const calculateTabelOfGroup = (groupWinners) => {
-  let playerWins = {};
-  console.log(groupWinners);
-};
-
-const getNextMatch = async (tournamentId, socketId) => {
+const getTournamentStatus = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+  return tournament.status;
+};
 
-  // Turnier anhand der ID finden
+const getTournamentStageMatches = async (tournamentId, socketId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
   const currentBoard = tournament.board1SocketId === socketId ? 1 : 2;
-  const otherBoard = tournament.board1SocketId === socketId ? 2 : 1;
-  const pointsGroup = tournament.pointsGroup;
-  const legsGroup = tournament.legsGroup;
-  const pointsSemifinal = tournament.pointsSemifinal;
-  const legsSemifinal = tournament.legsSemifinal;
-  const pointsFinal = tournament.pointsFinal;
-  const legsFinal = tournament.legsFinal;
-
-  if (tournament.status === "groupStage") {
-    const players = tournament.matches.groupStage.find(
-      (match) => match.board === currentBoard && match.winner === null
+  if (tournament.status === TournamentStatus.GROUP_STAGE) {
+    return tournament.matches.groupStage.filter(
+      (match) => match.board === currentBoard
     );
-
-    if (!players) {
-      // Check if  other board finished
-      const openMatchesOtherBoard = tournament.matches.groupStage.find(
-        (match) => match.board === otherBoard && match.winner === null
-      );
-      if (openMatchesOtherBoard) {
-        return tournament.board1SocketId === socketId
-          ? tournament.board2SocketId
-          : tournament.board1SocketId;
-      }
-
-      tournament.status = "semiFinals";
-      const groupMatchWinners = tournament.matches.groupStage.find(
-        (match) => match.board === currentBoard && match.winner !== null
-      );
-      const tableGroup = calculateTabelOfGroup(groupMatchWinners);
-
-      const otherGroupMatchWinners = tournament.matches.groupStage.find(
-        (match) => match.board === otherBoard && match.winner !== null
-      );
-      const tableOtherGroup = calculateTabelOfGroup(otherGroupMatchWinners);
-      // TODO: Save Players in Semifinal
-      //TODO: Build func to calculate table of group
-      //TODO: Build func to get all matches of group
-
-      await fs.writeFile(
-        tournamentsFilePath,
-        JSON.stringify(tournaments, null, 2)
-      );
-      getNextMatch(tournamentId, socketId);
-    }
-    return { players, pointsGroup, legsGroup };
-  } else if (tournament.status === "semiFinals") {
-    const players = tournament.matches.semiFinals.find(
-      (match) => match.board === currentBoard && match.winner === null
+  }
+  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+    return tournament.matches.semiFinals.filter(
+      (match) => match.board === currentBoard
     );
-    if (!players) {
-      tournament.status = "final";
-
-      // TODO: Save Players in Final
-
-      await fs.writeFile(
-        tournamentsFilePath,
-        JSON.stringify(tournaments, null, 2)
-      );
-      getNextMatch(tournamentId, socketId);
-    }
-    return { players, pointsSemifinal, legsSemifinal };
-  } else if (tournament.status === "final") {
-    const players = tournament.matches.final;
-    if (!players) {
-      tournament.status = "finished";
-
-      await fs.writeFile(
-        tournamentsFilePath,
-        JSON.stringify(tournaments, null, 2)
-      );
-      console.log("TUNIER BEENDET");
-      return;
-    }
-    return { players, pointsFinal, legsFinal };
+  }
+  if (tournament.status === TournamentStatus.FINAL_STAGE) {
+    return tournament.matches.final.filter(
+      (match) => match.board === currentBoard
+    );
   }
 };
 
-const saveTournamentGame = async (gameData) => {
+const tournamentStageLegs = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
-
-  const tournament = tournaments.find(
-    (t) => t.id === Number(gameData.tournamentId)
-  );
-
-  let match;
-  if (tournament.status === "groupStage") {
-    match = tournament.matches.groupStage.find(
-      (m) =>
-        m.player1.id === gameData.player1.id &&
-        m.player2.id === gameData.player2.id &&
-        m.winner === null
-    );
-  } else if (tournament.status === "semiFinals") {
-    match = tournament.matches.semiFinals.find(
-      (m) =>
-        m.player1.id === gameData.player1.id &&
-        m.player2.id === gameData.player2.id &&
-        m.winner === null
-    );
-  } else if (tournament.status === "final") {
-    match = tournament.matches.final;
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+  if (tournament.status === TournamentStatus.GROUP_STAGE) {
+    return tournament.legsGroup;
   }
-  match.winner = gameData.winner;
+  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+    return tournament.legsSemifinal;
+  }
+  if (tournament.status === TournamentStatus.FINAL_STAGE) {
+    return tournament.legsFinal;
+  }
+};
+
+const tournamentStagePoints = async (tournamentId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+  if (tournament.status === TournamentStatus.GROUP_STAGE) {
+    return tournament.pointsGroup;
+  }
+  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+    return tournament.pointsSemifinal;
+  }
+  if (tournament.status === TournamentStatus.FINAL_STAGE) {
+    return tournament.pointsFinal;
+  }
+};
+
+const saveTournamentMatch = async (tournamentId, matchData) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  let matchList;
+  if (tournament.status === TournamentStatus.GROUP_STAGE) {
+    matchList = tournament.matches.groupStage;
+  } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+    matchList = tournament.matches.semiFinals;
+  } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
+    matchList = [tournament.matches.final];
+  }
+
+  const matchIndex = matchList.findIndex(
+    (match) =>
+      match.player1.id === matchData.player1.id &&
+      match.player2.id === matchData.player2.id
+  );
+  matchList[matchIndex].winner = matchData.winner;
 
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
+};
+
+const checkIfStageFinished = async (tournamentId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  let matches;
+  let allMatchesFinished = true;
+
+  if (tournament.status === TournamentStatus.GROUP_STAGE) {
+    matches = tournament.matches.groupStage;
+  } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+    matches = tournament.matches.semiFinals;
+  } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
+    matches = [tournament.matches.final];
+  }
+
+  for (const match of matches) {
+    if (!match.winner) {
+      allMatchesFinished = false;
+      break;
+    }
+  }
+
+  return allMatchesFinished;
 };
 
 module.exports = {
   createTournament,
   openTournaments,
-  getTournamentById,
   startTournament,
-  getNextMatch,
-  saveTournamentGame,
+  getTournamentStageMatches,
+  getTournamentStatus,
+  tournamentStageLegs,
+  tournamentStagePoints,
+  saveTournamentMatch,
+  checkIfStageFinished,
 };

@@ -10,30 +10,23 @@ import UndoIcon from "@mui/icons-material/Undo";
 import SendIcon from "@mui/icons-material/Send";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { useState } from "react";
-import { GameData } from "../../interfaces/gameInterface";
+import { MatchData, MatchProps } from "../../interfaces/matchInterface";
 import { Player } from "../../interfaces/playerInterface";
 
-interface GameProps extends GameData {
-  onGameFinished: (gameData: GameData) => void;
-}
-
-export default function Game({
-  tournamentId,
-  player1,
-  player2,
+export default function Match({
+  matchData,
   points,
   legs,
   starter,
-  mode,
-  onGameFinished,
-}: GameProps) {
+  onFinishedMatch,
+}: MatchProps) {
+  const { player1, player2 } = matchData;
+
   const [player1Points, setPlayer1Points] = useState<number>(points);
   const [player2Points, setPlayer2Points] = useState<number>(points);
   const [player1Legs, setPlayer1Legs] = useState<number>(0);
   const [player2Legs, setPlayer2Legs] = useState<number>(0);
-  const [currentPlayerId, setCurrentPlayerId] = useState<number>(
-    starter?.id ?? player1.id
-  );
+  const [currentPlayerId, setCurrentPlayerId] = useState<number>(starter.id);
   const [currentLeg, setCurrentLeg] = useState<number>(1);
   const [scores, setScores] = useState<
     {
@@ -51,21 +44,17 @@ export default function Game({
     setPlayer2Legs(0);
     setCurrentLeg(1);
     setScores([]);
-    setCurrentPlayerId(starter?.id ?? player1.id);
+    setCurrentPlayerId(starter.id);
   };
 
   const handleResult = async (winner: Player) => {
-    const gameData: GameData = {
-      tournamentId,
+    const matchData: MatchData = {
       player1,
       player2,
-      points,
-      legs,
-      starter,
-      mode,
       winner,
     };
-    onGameFinished(gameData);
+    onFinishedMatch(matchData);
+    console.log(matchData);
     resetGame();
   };
 
@@ -73,6 +62,7 @@ export default function Game({
     if (score < 0 || score > 180) {
       return alert("Ungültiger Wurf!");
     }
+
     const isPlayer1 = currentPlayerId === player1.id;
     const currentPoints = isPlayer1 ? player1Points : player2Points;
     const newPoints = currentPoints - score;
@@ -83,29 +73,30 @@ export default function Game({
       );
     }
 
-    const updatePlayerScore = (
-      player: Player,
-      setPoints: (value: number) => void,
-      setLegs: (value: number) => void,
-      legsCount: number
-    ) => {
-      if (newPoints === 0) {
-        if (legsCount + 1 === legs) {
-          handleResult(player);
-        }
-        setLegs(legsCount + 1);
-        resetLeg();
+    if (newPoints === 0) {
+      if (isPlayer1) {
+        setPlayer1Legs((prev) => {
+          const newLegs = prev + 1;
+          if (newLegs === legs) handleResult(player1);
+          return newLegs;
+        });
       } else {
-        setPoints(newPoints);
-        setCurrentPlayerId(isPlayer1 ? player2.id : player1.id);
+        setPlayer2Legs((prev) => {
+          const newLegs = prev + 1;
+          if (newLegs === legs) handleResult(player2);
+          return newLegs;
+        });
       }
-    };
-
-    if (isPlayer1) {
-      updatePlayerScore(player1, setPlayer1Points, setPlayer1Legs, player1Legs);
+      resetLeg();
     } else {
-      updatePlayerScore(player2, setPlayer2Points, setPlayer2Legs, player2Legs);
+      if (isPlayer1) {
+        setPlayer1Points(newPoints);
+      } else {
+        setPlayer2Points(newPoints);
+      }
+      setCurrentPlayerId(isPlayer1 ? player2.id : player1.id);
     }
+
     setScores((prevScores) => [
       ...prevScores,
       {
@@ -120,13 +111,14 @@ export default function Game({
   const resetLeg = () => {
     setPlayer1Points(points);
     setPlayer2Points(points);
-    setCurrentLeg(currentLeg + 1);
-
-    if (currentLeg % 2 === 0) {
-      setCurrentPlayerId(starter.id);
-    } else {
-      setCurrentPlayerId(starter.id === player1.id ? player2.id : player1.id);
-    }
+    setCurrentLeg((prev) => prev + 1);
+    setCurrentPlayerId(
+      currentLeg % 2 === 0
+        ? starter.id
+        : starter.id === player1.id
+        ? player2.id
+        : player1.id
+    );
   };
 
   const handleUndo = () => {
@@ -139,16 +131,32 @@ export default function Game({
 
     if (lastScore.winner) {
       if (lastScore.currentPlayerId === player1.id) {
-        setPlayer1Legs(player1Legs - 1);
+        setPlayer1Legs((prev) => Math.max(0, prev - 1));
       } else {
-        setPlayer2Legs(player2Legs - 1);
+        setPlayer2Legs((prev) => Math.max(0, prev - 1));
       }
     }
     setCurrentPlayerId(lastScore.currentPlayerId);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const value = parseInt((e.target as HTMLInputElement).value);
+      if (!isNaN(value)) handleScoreSubmit(value);
+      (e.target as HTMLInputElement).value = "";
+    }
+  };
+
+  const handleSendClick = () => {
+    const input = document.querySelector("input") as HTMLInputElement;
+    const value = parseInt(input?.value);
+    if (!isNaN(value)) handleScoreSubmit(value);
+    input.value = "";
+  };
+
   return (
     <Container>
+      {/* Spieler 1 */}
       <Box
         sx={{
           width: "100%",
@@ -185,6 +193,8 @@ export default function Game({
           </Grid2>
         </Grid2>
       </Box>
+
+      {/* Spieler 2 */}
       <Box
         sx={{
           width: "100%",
@@ -222,6 +232,7 @@ export default function Game({
         </Grid2>
       </Box>
 
+      {/* Eingabebereich für Score und Steuerungen */}
       <Box sx={{ width: "100%", marginTop: "2rem" }}>
         <Grid2
           container
@@ -229,37 +240,26 @@ export default function Game({
           alignItems="center"
           justifyContent="center"
         >
+          {/* Undo Button */}
           <Grid2 size={2} display="flex" justifyContent="center">
             <IconButton onClick={handleUndo} disabled={scores.length === 0}>
               <UndoIcon />
             </IconButton>
           </Grid2>
 
+          {/* Score Eingabefeld */}
           <Grid2 size={8}>
             <TextField
               type="number"
               fullWidth
               InputProps={{ inputProps: { min: 1, max: 180 } }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  const value = parseInt((e.target as HTMLInputElement).value);
-                  if (!isNaN(value)) handleScoreSubmit(value);
-                  (e.target as HTMLInputElement).value = "";
-                }
-              }}
+              onKeyDown={handleKeyDown}
             />
           </Grid2>
+
+          {/* Senden Button */}
           <Grid2 size={2} display="flex" justifyContent="center">
-            <IconButton
-              onClick={() => {
-                const input = document.querySelector(
-                  "input"
-                ) as HTMLInputElement;
-                const value = parseInt(input?.value);
-                if (!isNaN(value)) handleScoreSubmit(value);
-                input.value = "";
-              }}
-            >
+            <IconButton onClick={handleSendClick}>
               <SendIcon />
             </IconButton>
           </Grid2>

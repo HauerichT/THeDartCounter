@@ -10,14 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  MatchMode,
-  SingleGameSetupProps,
-} from "../../interfaces/gameInterface";
+import { MatchMode } from "../../interfaces/matchInterface";
 import { getPlayers } from "../../apis/playersApi";
 import { Player } from "../../interfaces/playerInterface";
 
-export default function SingleGameSetup({ onStartGame }: SingleGameSetupProps) {
+export default function SingleGameSetup({
+  onStartMatch,
+}: SingleGameSetupProps) {
   const [player1, setPlayer1] = useState<Player | null>(null);
   const [player2, setPlayer2] = useState<Player | null>(null);
   const [legs, setLegs] = useState<number>(1);
@@ -47,7 +46,7 @@ export default function SingleGameSetup({ onStartGame }: SingleGameSetupProps) {
       alert("Spieler dürfen nicht gleich sein!");
       return;
     }
-    onStartGame({
+    onStartMatch({
       tournamentId: null,
       player1: player1,
       player2: player2,

@@ -1,75 +1,101 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
-import { getNextTournamentMatch } from "../apis/tournamentApi";
-import Game from "../components/Game/Game";
-import { GameData, MatchMode } from "../interfaces/gameInterface";
-import { Player } from "../interfaces/playerInterface";
-import { postFinishedGame } from "../apis/singleGameApi";
-import socket from "../utils/socket";
+import {
+  getTournamentStatus,
+  getTournamentStageMatches,
+  getTournamentStageLegs,
+  getTournamentStagePoints,
+  postFinishedTournamentMatch,
+} from "../apis/tournamentApi";
+import Match from "../components/Match/Match";
+import { MatchData } from "../interfaces/matchInterface";
+import { TournamentStatus } from "../interfaces/tournamentInterface";
 
 export default function TournamentPage() {
   const { tournamentId } = useParams<{ tournamentId: string }>();
-  const [match, setMatch] = useState<GameData | null>(null);
-  const [waitingForOtherGroup, setWaitingForOtherGroup] =
-    useState<boolean>(false);
+  const [tournamentStatus, setTournamentStatus] = useState<TournamentStatus>(
+    TournamentStatus.OPEN
+  );
+  const [matches, setMatches] = useState<MatchData[]>([]);
+  const [legs, setLegs] = useState<number>();
+  const [points, setPoints] = useState<number>();
 
   useEffect(() => {
-    getNextMatch();
+    fetchTournamentStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tournamentId]);
 
-    socket.on("waitingForOtherGroup", () => {
-      setWaitingForOtherGroup(true);
-    });
-
-    return () => {
-      socket.off("waitingForOtherGroup");
-    };
-  }, []);
-
-  const getNextMatch = async () => {
-    if (waitingForOtherGroup) return;
-
-    try {
-      const nextMatch = await getNextTournamentMatch(Number(tournamentId));
-      if (!nextMatch) {
-        setWaitingForOtherGroup(true);
-        return;
-      }
-      setMatch({
-        tournamentId: Number(tournamentId),
-        player1: nextMatch.players.player1 as Player,
-        player2: nextMatch.players.player2 as Player,
-        points: nextMatch.pointsGroup,
-        legs: nextMatch.legsGroup,
-        starter: nextMatch.players.player1 as Player,
-        mode: MatchMode.TOURNAMENT_MATCH,
-        winner: null,
-      });
-    } catch (error) {
-      console.error("Fehler beim Abrufen des nächsten Spiels:", error);
+  useEffect(() => {
+    if (tournamentStatus === TournamentStatus.GROUP_STAGE) {
+      fetchTournamentStageMatches();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tournamentStatus]);
+
+  const fetchTournamentStatus = async () => {
+    const resTournamentStatus = await getTournamentStatus(Number(tournamentId));
+    if (!resTournamentStatus.success) {
+      return;
+    }
+    setTournamentStatus(resTournamentStatus.data);
   };
 
-  const handleGameFinished = async (gameData: GameData) => {
-    try {
-      await postFinishedGame(gameData);
-      alert(`Spiel beendet! ${gameData.winner?.name} hat gewonnen!`);
-    } catch (error) {
-      console.error("Fehler beim Abschließen des Spiels:", error);
+  const fetchTournamentStageMatches = async () => {
+    // Get the stage matches
+    const resTournamentStageMatches = await getTournamentStageMatches(
+      Number(tournamentId)
+    );
+    console.log(resTournamentStageMatches);
+    if (!resTournamentStageMatches.success) {
+      return;
     }
+    setMatches(resTournamentStageMatches.data);
+
+    // Get the stage leg amount
+    const resTournamentStageLegs = await getTournamentStageLegs(
+      Number(tournamentId)
+    );
+    console.log(resTournamentStageLegs);
+    if (!resTournamentStageLegs.success) {
+      return;
+    }
+    setLegs(resTournamentStageLegs.data);
+
+    // Get the group point amount
+    const resTournamentStagePoints = await getTournamentStagePoints(
+      Number(tournamentId)
+    );
+    console.log(resTournamentStagePoints);
+    if (!resTournamentStagePoints.success) {
+      return;
+    }
+    setPoints(resTournamentStagePoints.data);
   };
 
-  return match ? (
-    <Game
-      key={match?.player1.id + "-" + match?.player2.id}
-      {...match}
-      onGameFinished={handleGameFinished}
+  const handleFinishedMatch = async (matchData: MatchData) => {
+    const resPostFinishedMatch = await postFinishedTournamentMatch(
+      Number(tournamentId),
+      matchData
+    );
+    console.log(resPostFinishedMatch);
+    if (!resPostFinishedMatch.success) {
+      return;
+    }
+    alert(`Spiel beendet! ${matchData.winner?.name} hat gewonnen!`);
+    setMatches((prevMatches) => prevMatches.slice(1));
+  };
+
+  return matches.length > 0 && points !== undefined && legs !== undefined ? (
+    <Match
+      key={matches[0].player1.id + "-" + matches[0].player2.id}
+      matchData={matches[0]}
+      points={points}
+      legs={legs}
+      starter={matches[0].player1}
+      onFinishedMatch={handleFinishedMatch}
     />
   ) : (
-    <Typography>
-      {waitingForOtherGroup
-        ? "Warten auf andere Gruppen..."
-        : "Warten auf nächstes Match..."}
-    </Typography>
+    <Typography>"Warten auf nächstes Match..."</Typography>
   );
 }

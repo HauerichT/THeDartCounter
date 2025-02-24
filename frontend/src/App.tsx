@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import TournamentOverviewPage from "./pages/TournamentOverviewPage";
-import SingleGame from "./pages/SingleGame";
+import SingleGame from "./pages/SingleMatch";
 import TournamentPage from "./pages/TournamentPage";
 
 export default function App() {

@@ -3,7 +3,7 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const playerRoutes = require("./routes/playerRoutes");
-const gameRoutes = require("./routes/gameRoutes");
+const singleMatchRoutes = require("./routes/singleMatchRoutes");
 const tournamentRoutes = require("./routes/tournamentRoutes");
 const tournamentController = require("./controllers/tournamentController");
 
@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Gib `io` beim Registrieren der Routen weiter
 app.use("/api/players", playerRoutes);
-app.use("/api/games", gameRoutes);
+app.use("/api/matches", singleMatchRoutes);
 app.use("/api/tournaments", tournamentRoutes(io));
 
 const PORT = process.env.PORT || 8000;

@@ -10,7 +10,6 @@ module.exports = (io) => {
         req.body
       );
 
-      // Nachricht an alle Clients senden
       io.emit("tournamentCreated", newTournament);
 
       res.json({
@@ -56,27 +55,114 @@ module.exports = (io) => {
   });
 
   router.get(
-    "/nextTournamentMatch/:tournamentId/:socketId",
+    "/getTournamentStageMatches/:tournamentId/:socketId",
     async (req, res) => {
       try {
-        const nextMatch = await tournamentController.getNextMatch(
-          req.params.tournamentId,
-          req.params.socketId
-        );
-        if (typeof nextMatch !== "object") {
-          io.to(nextMatch).emit("waitingForOtherGroup");
-          res.json({
-            success: false,
-            message: "Andere Gruppe noch nicht fertig.",
-          });
-        } else {
-          res.json(nextMatch);
-        }
-      } catch (error) {
-        console.error("Fehler beim Abrufen des Turniers:", error);
+        const stageMatches =
+          await tournamentController.getTournamentStageMatches(
+            req.params.tournamentId,
+            req.params.socketId
+          );
+        res.json({
+          success: true,
+          message: "Spiele der aktuellen Phase erfolgreich abgerufen!",
+          data: stageMatches,
+        });
+      } catch (err) {
+        console.error("Fehler beim Abrufen der aktuellen Spiele:", err);
         res.json({
           success: false,
-          message: "Fehler beim Abrufen des Turniers.",
+          message: "Fehler beim Abrufen der aktuellen Spiele!",
+          data: err,
+        });
+      }
+    }
+  );
+
+  router.get("/getTournamentStatus/:tournamentId", async (req, res) => {
+    try {
+      const tournamentStatus = await tournamentController.getTournamentStatus(
+        req.params.tournamentId
+      );
+      res.json({
+        success: true,
+        message: "Tunierstatus erfolgreich abgerufen!",
+        data: tournamentStatus,
+      });
+    } catch (err) {
+      console.error("Fehler beim Abrufen des Tunierstatus:", err);
+      res.json({
+        success: false,
+        message: "Fehler beim Abrufen des Tunierstatus!",
+        data: err,
+      });
+    }
+  });
+
+  router.get("/getTournamentStageLegs/:tournamentId", async (req, res) => {
+    try {
+      const tournamentStageLegs =
+        await tournamentController.tournamentStageLegs(req.params.tournamentId);
+      res.json({
+        success: true,
+        message: "Anzahl der Legs erfolgreich abgerufen!",
+        data: tournamentStageLegs,
+      });
+    } catch (err) {
+      console.error("Fehler beim Abrufen der Anzahl der Legs:", err);
+      res.json({
+        success: false,
+        message: "Fehler beim Abrufen der Anzahl der Legs!",
+        data: err,
+      });
+    }
+  });
+
+  router.get("/getTournamentStagePoints/:tournamentId", async (req, res) => {
+    try {
+      const tournamentStagePoints =
+        await tournamentController.tournamentStagePoints(
+          req.params.tournamentId
+        );
+      res.json({
+        success: true,
+        message: "Anzahl der Points erfolgreich abgerufen!",
+        data: tournamentStagePoints,
+      });
+    } catch (err) {
+      console.error("Fehler beim Abrufen der Anzahl der Points:", err);
+      res.json({
+        success: false,
+        message: "Fehler beim Abrufen der Anzahl der Points!",
+        data: err,
+      });
+    }
+  });
+
+  router.post(
+    "/postFinishedTournamentMatch/:tournamentId",
+    async (req, res) => {
+      try {
+        await tournamentController.saveTournamentMatch(
+          req.params.tournamentId,
+          req.body
+        );
+
+        const isStageFinished = await tournamentController.checkIfStageFinished(
+          req.params.tournamentId
+        );
+
+        res.json({
+          success: true,
+          message: "Spiel erfolgreich gespeichert!",
+          data: null,
+        });
+      } catch (err) {
+        console.error("Fehler beim Speichern des Spiels:", err);
+        res.json({
+          success: false,
+          message: "Fehler beim Speichern des Spiels!",
+          data: err,
         });
       }
     }
