@@ -1,8 +1,172 @@
 [
   {
-    "id": 1740383190740,
-    "board1SocketId": "EWRPar-uKv6XIXQ7AAAF",
-    "board2SocketId": "cjNHYS9zpnwXlBwCAAAH",
+    "id": 1740588635225,
+    "board1SocketId": "2v0m5RRTpB8ewos-AAAL",
+    "board2SocketId": "t_7bKhtUWpRF49HfAAAJ",
+    "players": [
+      {
+        "id": 3,
+        "name": "Fynn"
+      },
+      {
+        "id": 1,
+        "name": "Timo"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 5,
+        "name": "Janis"
+      },
+      {
+        "id": 2,
+        "name": "Jannis"
+      },
+      {
+        "id": 6,
+        "name": "Carsten K."
+      }
+    ],
+    "pointsGroup": 301,
+    "pointsSemifinal": 501,
+    "pointsFinal": 301,
+    "legsGroup": 1,
+    "legsSemifinal": 1,
+    "legsFinal": 1,
+    "groups": {
+      "A": [
+        {
+          "id": 3,
+          "name": "Fynn"
+        },
+        {
+          "id": 1,
+          "name": "Timo"
+        },
+        {
+          "id": 4,
+          "name": "Luca"
+        }
+      ],
+      "B": [
+        {
+          "id": 5,
+          "name": "Janis"
+        },
+        {
+          "id": 2,
+          "name": "Jannis"
+        },
+        {
+          "id": 6,
+          "name": "Carsten K."
+        }
+      ]
+    },
+    "matches": {
+      "groupStage": [
+        {
+          "player1": {
+            "id": 3,
+            "name": "Fynn"
+          },
+          "player2": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "board": 1,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 3,
+            "name": "Fynn"
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "board": 1,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "board": 1,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 5,
+            "name": "Janis"
+          },
+          "player2": {
+            "id": 2,
+            "name": "Jannis"
+          },
+          "board": 2,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 5,
+            "name": "Janis"
+          },
+          "player2": {
+            "id": 6,
+            "name": "Carsten K."
+          },
+          "board": 2,
+          "winner": null
+        },
+        {
+          "player1": {
+            "id": 2,
+            "name": "Jannis"
+          },
+          "player2": {
+            "id": 6,
+            "name": "Carsten K."
+          },
+          "board": 2,
+          "winner": null
+        }
+      ],
+      "semiFinals": [
+        {
+          "player1": null,
+          "player2": null,
+          "winner": null,
+          "board": 1
+        },
+        {
+          "player1": null,
+          "player2": null,
+          "winner": null,
+          "board": 2
+        }
+      ],
+      "final": {
+        "player1": null,
+        "player2": null,
+        "winner": null,
+        "board": 1
+      }
+    },
+    "status": 1
+  },
+  {
+    "id": 1740589182491,
+    "board1SocketId": "S7nHqkMReZOR9y02AAAL",
+    "board2SocketId": "WVGTqBS4H6V8KmRAAAAJ",
     "players": [
       {
         "id": 4,
@@ -13,24 +177,20 @@
         "name": "Janis"
       },
       {
-        "id": 6,
-        "name": "Carsten K."
+        "id": 3,
+        "name": "Fynn"
       },
       {
         "id": 2,
         "name": "Jannis"
       },
       {
-        "id": 7,
-        "name": "Carsten W."
+        "id": 6,
+        "name": "Carsten K."
       },
       {
         "id": 1,
         "name": "Timo"
-      },
-      {
-        "id": 3,
-        "name": "Fynn"
       }
     ],
     "pointsGroup": 301,
@@ -50,26 +210,22 @@
           "name": "Janis"
         },
         {
-          "id": 6,
-          "name": "Carsten K."
-        },
-        {
-          "id": 2,
-          "name": "Jannis"
+          "id": 3,
+          "name": "Fynn"
         }
       ],
       "B": [
         {
-          "id": 7,
-          "name": "Carsten W."
+          "id": 2,
+          "name": "Jannis"
+        },
+        {
+          "id": 6,
+          "name": "Carsten K."
         },
         {
           "id": 1,
           "name": "Timo"
-        },
-        {
-          "id": 3,
-          "name": "Fynn"
         }
       ]
     },
@@ -85,21 +241,6 @@
             "name": "Janis"
           },
           "board": 1,
-          "winner": {
-            "id": 4,
-            "name": "Luca"
-          }
-        },
-        {
-          "player1": {
-            "id": 6,
-            "name": "Carsten K."
-          },
-          "player2": {
-            "id": 2,
-            "name": "Jannis"
-          },
-          "board": 1,
           "winner": null
         },
         {
@@ -108,8 +249,8 @@
             "name": "Luca"
           },
           "player2": {
-            "id": 6,
-            "name": "Carsten K."
+            "id": 3,
+            "name": "Fynn"
           },
           "board": 1,
           "winner": null
@@ -120,40 +261,28 @@
             "name": "Janis"
           },
           "player2": {
-            "id": 2,
-            "name": "Jannis"
+            "id": 3,
+            "name": "Fynn"
           },
           "board": 1,
           "winner": null
         },
         {
           "player1": {
-            "id": 4,
-            "name": "Luca"
-          },
-          "player2": {
             "id": 2,
             "name": "Jannis"
-          },
-          "board": 1,
-          "winner": null
-        },
-        {
-          "player1": {
-            "id": 5,
-            "name": "Janis"
           },
           "player2": {
             "id": 6,
             "name": "Carsten K."
           },
-          "board": 1,
+          "board": 2,
           "winner": null
         },
         {
           "player1": {
-            "id": 7,
-            "name": "Carsten W."
+            "id": 2,
+            "name": "Jannis"
           },
           "player2": {
             "id": 1,
@@ -164,24 +293,12 @@
         },
         {
           "player1": {
-            "id": 7,
-            "name": "Carsten W."
+            "id": 6,
+            "name": "Carsten K."
           },
           "player2": {
-            "id": 3,
-            "name": "Fynn"
-          },
-          "board": 2,
-          "winner": null
-        },
-        {
-          "player1": {
             "id": 1,
             "name": "Timo"
-          },
-          "player2": {
-            "id": 3,
-            "name": "Fynn"
           },
           "board": 2,
           "winner": null

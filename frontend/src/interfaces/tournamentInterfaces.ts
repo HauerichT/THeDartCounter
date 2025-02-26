@@ -1,4 +1,4 @@
-import { Player } from "./playerInterface";
+import { Player } from "./playerInterfaces";
 
 export enum TournamentStatus {
   OPEN,

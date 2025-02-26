@@ -1,8 +1,8 @@
 import axios from "axios";
 import { API_URL } from "./configApi";
-import { TournamentCreationData } from "../interfaces/tournamentInterface";
+import { TournamentCreationData } from "../interfaces/tournamentInterfaces";
 import socket from "../utils/socket";
-import { MatchData } from "../interfaces/matchInterface";
+import { MatchData } from "../interfaces/matchInterfaces";
 
 export async function postCreateTournament(
   tournamentCreationData: TournamentCreationData

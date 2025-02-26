@@ -1,1 +1,85 @@
-[]
+[
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "date": 1740384858454
+  },
+  {
+    "player1": {
+      "id": 8,
+      "name": "Turbo"
+    },
+    "player2": {
+      "id": 10,
+      "name": "Tober"
+    },
+    "winner": {
+      "id": 10,
+      "name": "Tober"
+    },
+    "points": 301,
+    "legs": 2,
+    "date": 1740494269294
+  },
+  {
+    "player1": {
+      "id": 5,
+      "name": "Janis"
+    },
+    "player2": {
+      "id": 8,
+      "name": "Turbo"
+    },
+    "winner": {
+      "id": 8,
+      "name": "Turbo"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740494366271
+  },
+  {
+    "player1": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "player2": {
+      "id": 11,
+      "name": "Andreas"
+    },
+    "winner": {
+      "id": 11,
+      "name": "Andreas"
+    },
+    "points": 301,
+    "legs": 2,
+    "date": 1740494465761
+  },
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 9,
+      "name": "Ralf"
+    },
+    "winner": {
+      "id": 9,
+      "name": "Ralf"
+    },
+    "points": 301,
+    "legs": 3,
+    "date": 1740588522007
+  }
+]

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "./configApi";
-import { MatchData } from "../interfaces/matchInterface";
+import { MatchData } from "../interfaces/matchInterfaces";
 
 export async function postFinishedSingleMatch(matchData: MatchData) {
   try {

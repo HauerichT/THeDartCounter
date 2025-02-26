@@ -124,12 +124,10 @@ const createTournament = async (tournamentCreationData) => {
     status: TournamentStatus.OPEN,
   };
 
-  // Bestehende Turniere laden (Datei lesen)
   let tournaments = [];
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   tournaments = JSON.parse(data);
 
-  // Neues Turnier hinzufügen und Datei aktualisieren
   tournaments.push(newTournament);
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
   return newTournament;
@@ -179,9 +177,10 @@ const getTournamentStageMatches = async (tournamentId, socketId) => {
     );
   }
   if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    return tournament.matches.final.filter(
-      (match) => match.board === currentBoard
-    );
+    if (tournament.matches.final.board === currentBoard) {
+      return tournament.matches.final;
+    }
+    return [];
   }
 };
 
@@ -239,13 +238,88 @@ const saveTournamentMatch = async (tournamentId, matchData) => {
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
 };
 
-const checkIfStageFinished = async (tournamentId) => {
+const calculateGroupStageTable = async (groupMatches, group) => {
+  const scores = {};
+  group.forEach(
+    (player) =>
+      (scores[player.id] = {
+        id: player.id,
+        name: player.name,
+        wins: 0,
+        directWins: {},
+      })
+  );
+
+  groupMatches.forEach((match) => {
+    const winnerId = match.winner.id;
+    scores[winnerId].wins++;
+
+    const loserId =
+      match.player1.id === winnerId ? match.player2.id : match.player1.id;
+    scores[winnerId].directWins[loserId] =
+      (scores[winnerId].directWins[loserId] || 0) + 1;
+  });
+
+  const ranking = Object.values(scores)
+    .sort((a, b) => {
+      if (b.wins !== a.wins) return b.wins - a.wins;
+      return (b.directWins[a.id] || 0) - (a.directWins[b.id] || 0);
+    })
+    .map(({ id, name }) => ({ id, name }));
+  return ranking;
+};
+
+const setupSemifinalsStage = async (tournamentId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  tournament.status = TournamentStatus.SEMIFINALS_STAGE;
+
+  const matchesGroupA = tournament.matches.groupStage.filter(
+    (match) => match.board === 1
+  );
+  const tableGroupA = await calculateGroupStageTable(
+    matchesGroupA,
+    tournament.groups.A
+  );
+
+  const matchesGroupB = tournament.matches.groupStage.filter(
+    (match) => match.board === 2
+  );
+  const tableGroupB = await calculateGroupStageTable(
+    matchesGroupB,
+    tournament.groups.B
+  );
+
+  tournament.matches.semiFinals[0].player1 = tableGroupA[1];
+  tournament.matches.semiFinals[0].player2 = tableGroupB[0];
+  tournament.matches.semiFinals[1].player1 = tableGroupB[1];
+  tournament.matches.semiFinals[1].player2 = tableGroupA[0];
+
+  await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
+};
+
+const setupFinalStage = async (tournamentId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  tournament.status = TournamentStatus.FINAL_STAGE;
+
+  tournament.matches.final.player1 = tournament.matches.semiFinals[0].winner;
+  tournament.matches.final.player2 = tournament.matches.semiFinals[1].winner;
+
+  await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
+};
+
+const changeStageIfFinished = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
 
   let matches;
-  let allMatchesFinished = true;
+  let isStageFinished = true;
 
   if (tournament.status === TournamentStatus.GROUP_STAGE) {
     matches = tournament.matches.groupStage;
@@ -257,12 +331,22 @@ const checkIfStageFinished = async (tournamentId) => {
 
   for (const match of matches) {
     if (!match.winner) {
-      allMatchesFinished = false;
+      isStageFinished = false;
       break;
     }
   }
 
-  return allMatchesFinished;
+  if (isStageFinished) {
+    if (tournament.status === TournamentStatus.GROUP_STAGE) {
+      await setupSemifinalsStage(Number(tournamentId));
+    } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+      await setupFinalStage(Number(tournamentId));
+    } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
+      tournament.status = TournamentStatus.FINISHED;
+    }
+  }
+
+  return isStageFinished;
 };
 
 module.exports = {
@@ -274,5 +358,5 @@ module.exports = {
   tournamentStageLegs,
   tournamentStagePoints,
   saveTournamentMatch,
-  checkIfStageFinished,
+  changeStageIfFinished,
 };

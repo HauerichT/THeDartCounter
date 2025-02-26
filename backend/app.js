@@ -16,7 +16,13 @@ const io = new Server(server, {
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Gib `io` beim Registrieren der Routen weiter
@@ -41,7 +47,7 @@ io.on("connection", (socket) => {
     const numClients = room ? room.size : 0;
 
     if (numClients === 1) {
-      io.to(socket.id).emit("waitingForOpponent");
+      io.to(socket.id).emit("waitingForSecondBoard");
     } else if (numClients === 2) {
       tournamentController.startTournament(tournamentId, room);
       io.to(`tournament_${tournamentId}`).emit("startTournament", tournamentId);

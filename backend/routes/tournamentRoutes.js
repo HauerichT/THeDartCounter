@@ -103,6 +103,7 @@ module.exports = (io) => {
     try {
       const tournamentStageLegs =
         await tournamentController.tournamentStageLegs(req.params.tournamentId);
+
       res.json({
         success: true,
         message: "Anzahl der Legs erfolgreich abgerufen!",
@@ -124,6 +125,7 @@ module.exports = (io) => {
         await tournamentController.tournamentStagePoints(
           req.params.tournamentId
         );
+
       res.json({
         success: true,
         message: "Anzahl der Points erfolgreich abgerufen!",
@@ -148,14 +150,19 @@ module.exports = (io) => {
           req.body
         );
 
-        const isStageFinished = await tournamentController.checkIfStageFinished(
-          req.params.tournamentId
-        );
+        const isStageFinished =
+          await tournamentController.changeStageIfFinished(
+            req.params.tournamentId
+          );
+
+        if (isStageFinished) {
+          io.to(`tournament_${req.params.tournamentId}`).emit("changedStage");
+        }
 
         res.json({
           success: true,
           message: "Spiel erfolgreich gespeichert!",
-          data: null,
+          data: isStageFinished,
         });
       } catch (err) {
         console.error("Fehler beim Speichern des Spiels:", err);
