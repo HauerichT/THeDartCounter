@@ -3,7 +3,7 @@ import { Player } from "./playerInterfaces";
 export enum TournamentStatus {
   OPEN,
   GROUP_STAGE,
-  SEMIFINALS_STAGE,
+  SEMIFINAL_STAGE,
   FINAL_STAGE,
   FINISHED,
 }

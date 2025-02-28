@@ -8,10 +8,14 @@ import {
   postFinishedTournamentMatch,
   getTournamentStatus,
 } from "../apis/tournamentApi";
-import MatchComponent from "../components/MatchComponent";
+import MatchComponent from "../components/Match/MatchComponent";
 import { MatchData } from "../interfaces/matchInterfaces";
 import { TournamentStatus } from "../interfaces/tournamentInterfaces";
 import socket from "../utils/socket";
+import {
+  CustomDialogComponent,
+  useDialog,
+} from "../components/CustomDialogComponent";
 
 export default function TournamentPage() {
   const { tournamentId } = useParams<{ tournamentId: string }>();
@@ -21,6 +25,7 @@ export default function TournamentPage() {
   const [tournamentStatus, setTournamentStatus] = useState<TournamentStatus>(
     TournamentStatus.OPEN
   );
+  const { dialog, setDialog, showDialog } = useDialog();
 
   useEffect(() => {
     fetchTournamentStatus();
@@ -42,8 +47,12 @@ export default function TournamentPage() {
   }, []);
 
   const fetchTournamentStatus = async () => {
-    const tournamentStatus = await getTournamentStatus(Number(tournamentId));
-    setTournamentStatus(tournamentStatus.data);
+    const resTournamentStatus = await getTournamentStatus(Number(tournamentId));
+    if (!resTournamentStatus.success) {
+      showDialog(resTournamentStatus.message, "error");
+    } else {
+      setTournamentStatus(resTournamentStatus.data);
+    }
   };
 
   const fetchTournamentStageMatches = async () => {
@@ -52,6 +61,7 @@ export default function TournamentPage() {
       Number(tournamentId)
     );
     if (!resTournamentStageMatches.success) {
+      showDialog(resTournamentStageMatches.message, "error");
       return;
     }
 
@@ -66,6 +76,7 @@ export default function TournamentPage() {
       Number(tournamentId)
     );
     if (!resTournamentStageLegs.success) {
+      showDialog(resTournamentStageLegs.message, "error");
       return;
     }
     setLegs(resTournamentStageLegs.data);
@@ -75,6 +86,7 @@ export default function TournamentPage() {
       Number(tournamentId)
     );
     if (!resTournamentStagePoints.success) {
+      showDialog(resTournamentStagePoints.message, "error");
       return;
     }
     setPoints(resTournamentStagePoints.data);
@@ -86,6 +98,7 @@ export default function TournamentPage() {
       matchData
     );
     if (!resPostFinishedMatch.success) {
+      showDialog(resPostFinishedMatch.message, "error");
       return;
     }
 
@@ -94,6 +107,7 @@ export default function TournamentPage() {
 
   return (
     <>
+      <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
       <Typography>{tournamentStatus}</Typography>
       {matches.length > 0 && points !== undefined && legs !== undefined ? (
         <MatchComponent

@@ -35,6 +35,7 @@ export default function TournamentSetup() {
     const resPlayers = await getPlayers();
     if (!resPlayers.success) {
       showDialog(resPlayers.message, "error");
+      return;
     } else {
       setPlayers(resPlayers.data);
     }
@@ -60,7 +61,7 @@ export default function TournamentSetup() {
   return (
     <>
       <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
-      <Container>
+      <Container maxWidth={false}>
         <Stack spacing={1} direction="column" mb={2}>
           <Typography>Spieler:</Typography>
           <Select

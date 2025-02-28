@@ -1,27 +1,45 @@
 import { Link } from "react-router-dom";
-import { Button, Container, Stack } from "@mui/material";
+import { Button, Container, Grid2 } from "@mui/material";
 
 export default function HomePage() {
   return (
-    <Container>
-      <Stack spacing={2} direction="column" sx={{ width: "100%" }}>
-        <Button
-          variant="contained"
-          fullWidth
-          component={Link}
-          to="/single-game"
-        >
-          Einzelspiel
-        </Button>
-        <Button
-          variant="contained"
-          fullWidth
-          component={Link}
-          to="/tournament-overview"
-        >
-          Tunier
-        </Button>
-      </Stack>
+    <Container
+      maxWidth={false}
+      sx={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "2rem",
+      }}
+    >
+      <Grid2 container spacing={2} sx={{ height: "100%", width: "100%" }}>
+        {/* Erste Reihe mit zwei 50%-Buttons */}
+        <Grid2 size={{ xs: 12, sm: 6 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ height: "50%" }}
+            component={Link}
+            to="/single-game"
+            color="primary"
+          >
+            Einzelspiel
+          </Button>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ height: "50%" }}
+            component={Link}
+            to="/tournament-overview"
+            color="secondary"
+          >
+            Tunier
+          </Button>
+        </Grid2>
+      </Grid2>
     </Container>
   );
 }

@@ -4,20 +4,27 @@ import TournamentOverviewPage from "./pages/TournamentOverviewPage";
 import SingleMatchPage from "./pages/SingleMatchPage";
 import TournamentPage from "./pages/TournamentPage";
 import NavbarComponent from "./components/NavbarComponent";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./utils/theme";
 
 export default function App() {
   return (
-    <Router>
-      <NavbarComponent />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/tournament-overview"
-          element={<TournamentOverviewPage />}
-        />
-        <Route path="/single-game" element={<SingleMatchPage />} />
-        <Route path="/tournament/:tournamentId" element={<TournamentPage />} />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <NavbarComponent />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/tournament-overview"
+            element={<TournamentOverviewPage />}
+          />
+          <Route path="/single-game" element={<SingleMatchPage />} />
+          <Route
+            path="/tournament/:tournamentId"
+            element={<TournamentPage />}
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }

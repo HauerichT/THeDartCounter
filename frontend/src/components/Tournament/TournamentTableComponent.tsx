@@ -16,10 +16,12 @@ import { useNavigate } from "react-router-dom";
 import { getOpenTournaments } from "../../apis/tournamentApi";
 import { Tournament } from "../../interfaces/tournamentInterfaces";
 import socket from "../../utils/socket";
+import { CustomDialogComponent, useDialog } from "../CustomDialogComponent";
 
 export default function TournamentsTable() {
   const [openTournaments, setOpenTournaments] = useState<Tournament[]>([]);
   const [waiting, setWaiting] = useState<boolean>(false);
+  const { dialog, setDialog, showDialog } = useDialog();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,58 +48,61 @@ export default function TournamentsTable() {
       socket.off("waitingForSecondBoard");
       socket.off("startTournament");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const fetchOpenTournaments = async () => {
-    try {
-      const tournaments = await getOpenTournaments();
-      setOpenTournaments(tournaments);
-    } catch (error) {
-      console.error("Fehler beim Abrufen der offenen Turniere:", error);
+    const resOpenTournaments = await getOpenTournaments();
+    if (!resOpenTournaments.success) {
+      showDialog(resOpenTournaments.message, "error");
+      return;
+    } else {
+      setOpenTournaments(resOpenTournaments.data);
     }
   };
 
-  const handleJoinTournament = (tournamentId: number) => {
-    socket.emit("joinTournament", tournamentId);
-  };
-
   return (
-    <Container>
-      {openTournaments.length === 0 ? (
-        <Typography>Keine offenen Tuniere vorhanden.</Typography>
-      ) : (
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Tunier-ID</TableCell>
-                <TableCell>Spieleranzahl</TableCell>
-                <TableCell>Aktion</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {openTournaments.map((tournament) => (
-                <TableRow key={tournament.id}>
-                  <TableCell>{tournament.id}</TableCell>
-                  <TableCell>{tournament.players.length}</TableCell>
-                  <TableCell>
-                    {waiting ? (
-                      <CircularProgress size={24} />
-                    ) : (
-                      <IconButton
-                        onClick={() => handleJoinTournament(tournament.id)}
-                        disabled={waiting}
-                      >
-                        <ArrowCircleRightIcon />
-                      </IconButton>
-                    )}
-                  </TableCell>
+    <>
+      <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
+      <Container maxWidth={false}>
+        {openTournaments.length === 0 ? (
+          <Typography>Keine offenen Tuniere vorhanden.</Typography>
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tunier-ID</TableCell>
+                  <TableCell>Spieleranzahl</TableCell>
+                  <TableCell>Aktion</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    </Container>
+              </TableHead>
+              <TableBody>
+                {openTournaments.map((tournament) => (
+                  <TableRow key={tournament.id}>
+                    <TableCell>{tournament.id}</TableCell>
+                    <TableCell>{tournament.players.length}</TableCell>
+                    <TableCell>
+                      {waiting ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        <IconButton
+                          onClick={() =>
+                            socket.emit("joinTournament", tournament.id)
+                          }
+                          disabled={waiting}
+                        >
+                          <ArrowCircleRightIcon />
+                        </IconButton>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Container>
+    </>
   );
 }

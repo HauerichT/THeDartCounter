@@ -4,7 +4,7 @@ import TournamentTableComponent from "../components/Tournament/TournamentTableCo
 
 export default function TournamentOverviewPage() {
   return (
-    <Container>
+    <Container maxWidth={false}>
       <TournamentSetupComponent />
       <Divider sx={{ marginTop: 10, marginBottom: 2 }}>
         <Chip label="Offene Tuniere" />

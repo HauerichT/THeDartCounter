@@ -12,6 +12,8 @@ export interface MatchData {
 export interface MatchScores {
   player1points: number;
   player2points: number;
+  player1score: number | null;
+  player2score: number | null;
   winner: boolean;
   currentPlayerId: number;
 }

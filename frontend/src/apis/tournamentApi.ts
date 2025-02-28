@@ -9,7 +9,7 @@ export async function postCreateTournament(
 ) {
   try {
     const response = await axios.post(
-      API_URL + "/api/tournaments/createTournament",
+      API_URL + "/api/tournaments/postCreateTournament",
       tournamentCreationData
     );
     return response.data;
@@ -21,7 +21,7 @@ export async function postCreateTournament(
 export async function getOpenTournaments() {
   try {
     const response = await axios.get(
-      API_URL + "/api/tournaments/openTournaments"
+      API_URL + "/api/tournaments/getOpenTournaments"
     );
     return response.data;
   } catch (error) {
@@ -32,7 +32,7 @@ export async function getOpenTournaments() {
 export async function getTournamentById(tournamentId: number) {
   try {
     const response = await axios.get(
-      `${API_URL}/api/tournaments/${tournamentId}`
+      `${API_URL}/api/tournaments/getTournamentById/${tournamentId}`
     );
     return response.data;
   } catch (error) {

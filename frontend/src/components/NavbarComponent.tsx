@@ -1,24 +1,40 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 export default function NavbarComponent() {
+  const theme = useTheme();
+
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar
+        sx={{ position: "fixed", backgroundColor: theme.palette.primary.dark }}
+      >
         <Toolbar>
           <Typography
-            variant="h6"
             component={Link}
             to="/"
-            sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
+            sx={{
+              flexGrow: 1,
+              textDecoration: "none",
+              color: theme.palette.text.secondary,
+            }}
           >
             THeDartCounter
           </Typography>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Button color="inherit" component={Link} to="/single-game">
+            <Button
+              sx={{ color: theme.palette.text.secondary }}
+              component={Link}
+              to="/single-game"
+            >
               Einzelspiel
             </Button>
-            <Button color="inherit" component={Link} to="/tournament-overview">
+            <Button
+              sx={{ color: theme.palette.text.secondary }}
+              component={Link}
+              to="/tournament-overview"
+            >
               Turnier
             </Button>
           </Box>
