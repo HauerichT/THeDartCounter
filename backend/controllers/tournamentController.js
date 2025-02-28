@@ -4,7 +4,6 @@ const TournamentStatus = require("../interfaces/tournamentInterface");
 
 const tournamentsFilePath = path.join(__dirname, "../data/tournaments.json");
 
-// Funktion zum Mischen der Spieler (Fisher-Yates-Algorithmus)
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -13,7 +12,6 @@ const shuffleArray = (array) => {
   return array;
 };
 
-// Funktion zum Erstellen der Spiele (Jeder-gegen-Jeden auf einem festen Board)
 const generateGroupMatches = (group, board) => {
   const matches = [];
   for (let i = 0; i < group.length; i++) {
@@ -29,39 +27,31 @@ const generateGroupMatches = (group, board) => {
   return matches;
 };
 
-// Optimierte Funktion zur gleichmäßigen Verteilung der Spiele
 const balanceMatches = (matches) => {
   const balanced = [];
   const lastPlayers = new Set();
 
-  // Schleife, solange noch Spiele vorhanden sind
   while (matches.length > 0) {
     let foundMatch = false;
 
     for (let i = 0; i < matches.length; i++) {
       const match = matches[i];
 
-      // Prüfen, ob match definiert ist
       if (!match || !match.player1 || !match.player2) continue;
 
-      // Prüfen, ob Spieler gerade gespielt haben
       if (!lastPlayers.has(match.player1) && !lastPlayers.has(match.player2)) {
-        // Spiel hinzufügen
         balanced.push(match);
 
-        // Zuletzt gespielte Spieler speichern
         lastPlayers.clear();
         lastPlayers.add(match.player1);
         lastPlayers.add(match.player2);
 
-        // Spiel aus dem Array entfernen
         matches.splice(i, 1);
         foundMatch = true;
         break;
       }
     }
 
-    // Falls kein gültiges Match gefunden wurde (Deadlock vermeiden)
     if (!foundMatch) {
       const match = matches.shift();
       if (match) {
@@ -76,50 +66,50 @@ const balanceMatches = (matches) => {
   return balanced;
 };
 
-const createTournament = async (tournamentCreationData) => {
+const postCreateTournament = async (tournamentData) => {
   const {
     players,
-    pointsGroup,
-    pointsSemifinal,
-    pointsFinal,
-    legsGroup,
-    legsSemifinal,
-    legsFinal,
-  } = tournamentCreationData;
+    pointsGroupStage,
+    pointsSemifinalStage,
+    pointsFinalStage,
+    legsGroupStage,
+    legsSemifinalStage,
+    legsFinalStage,
+  } = tournamentData;
 
   const shuffledPlayers = shuffleArray(players);
   const mid = Math.ceil(shuffledPlayers.length / 2);
-  const groupA = shuffledPlayers.slice(0, mid);
-  const groupB = shuffledPlayers.slice(mid);
+  const group1 = shuffledPlayers.slice(0, mid);
+  const group2 = shuffledPlayers.slice(mid);
 
-  const groupMatchesA = generateGroupMatches(groupA, 1);
-  const groupMatchesB = generateGroupMatches(groupB, 2);
+  const group1Matches = generateGroupMatches(group1, 1);
+  const group2Matches = generateGroupMatches(group2, 2);
 
-  const balancedGroupMatchesA = balanceMatches(groupMatchesA);
-  const balancedGroupMatchesB = balanceMatches(groupMatchesB);
+  const balancedGroup1Matches = balanceMatches(group1Matches);
+  const balancedGroup2Matches = balanceMatches(group2Matches);
 
   const newTournament = {
     id: Date.now(),
     board1SocketId: null,
     board2SocketId: null,
     players,
-    pointsGroup,
-    pointsSemifinal,
-    pointsFinal,
-    legsGroup,
-    legsSemifinal,
-    legsFinal,
+    pointsGroupStage,
+    pointsSemifinalStage,
+    pointsFinalStage,
+    legsGroupStage,
+    legsSemifinalStage,
+    legsFinalStage,
     groups: {
-      A: groupA,
-      B: groupB,
+      group1: groupA,
+      group2: groupB,
     },
     matches: {
-      groupStage: [...balancedGroupMatchesA, ...balancedGroupMatchesB],
-      semiFinals: [
+      groupStage: [...balancedGroup1Matches, ...balancedGroup2Matches],
+      semifinalStage: [
         { player1: null, player2: null, winner: null, board: 1 },
         { player1: null, player2: null, winner: null, board: 2 },
       ],
-      final: { player1: null, player2: null, winner: null, board: 1 },
+      finalStage: { player1: null, player2: null, winner: null, board: 1 },
     },
     status: TournamentStatus.OPEN,
   };
@@ -127,13 +117,13 @@ const createTournament = async (tournamentCreationData) => {
   let tournaments = [];
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   tournaments = JSON.parse(data);
-
   tournaments.push(newTournament);
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
+
   return newTournament;
 };
 
-const openTournaments = async () => {
+const getOpenTournaments = async () => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   const tournaments = JSON.parse(data);
   return tournaments.filter(
@@ -171,46 +161,46 @@ const getTournamentStageMatches = async (tournamentId, socketId) => {
       (match) => match.board === currentBoard
     );
   }
-  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
-    return tournament.matches.semiFinals.filter(
+  if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
+    return tournament.matches.semifinalStage.filter(
       (match) => match.board === currentBoard
     );
   }
   if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    if (tournament.matches.final.board === currentBoard) {
-      return tournament.matches.final;
+    if (tournament.matches.finalStage.board === currentBoard) {
+      return tournament.matches.finalStage;
     }
     return [];
   }
 };
 
-const tournamentStageLegs = async (tournamentId) => {
+const getTournamentStageLegs = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
   if (tournament.status === TournamentStatus.GROUP_STAGE) {
-    return tournament.legsGroup;
+    return tournament.legsGroupStage;
   }
-  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
-    return tournament.legsSemifinal;
+  if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
+    return tournament.legsSemifinalStage;
   }
   if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    return tournament.legsFinal;
+    return tournament.legsFinalStage;
   }
 };
 
-const tournamentStagePoints = async (tournamentId) => {
+const getTournamentStagePoints = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
   if (tournament.status === TournamentStatus.GROUP_STAGE) {
-    return tournament.pointsGroup;
+    return tournament.pointsGroupStage;
   }
-  if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
-    return tournament.pointsSemifinal;
+  if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
+    return tournament.pointsSemifinalStage;
   }
   if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    return tournament.pointsFinal;
+    return tournament.pointsFinalStage;
   }
 };
 
@@ -222,10 +212,10 @@ const saveTournamentMatch = async (tournamentId, matchData) => {
   let matchList;
   if (tournament.status === TournamentStatus.GROUP_STAGE) {
     matchList = tournament.matches.groupStage;
-  } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
-    matchList = tournament.matches.semiFinals;
+  } else if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
+    matchList = tournament.matches.semifinalStage;
   } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    matchList = [tournament.matches.final];
+    matchList = [tournament.matches.finalStage];
   }
 
   const matchIndex = matchList.findIndex(
@@ -269,33 +259,33 @@ const calculateGroupStageTable = async (groupMatches, group) => {
   return ranking;
 };
 
-const setupSemifinalsStage = async (tournamentId) => {
+const setupSemifinalStage = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
 
-  tournament.status = TournamentStatus.SEMIFINALS_STAGE;
+  tournament.status = TournamentStatus.SEMIFINAL_STAGE;
 
-  const matchesGroupA = tournament.matches.groupStage.filter(
+  const matchesGroup1 = tournament.matches.groupStage.filter(
     (match) => match.board === 1
   );
-  const tableGroupA = await calculateGroupStageTable(
-    matchesGroupA,
-    tournament.groups.A
+  const tableGroup1 = await calculateGroupStageTable(
+    matchesGroup1,
+    tournament.groups.group1
   );
 
-  const matchesGroupB = tournament.matches.groupStage.filter(
+  const matchesGroup2 = tournament.matches.groupStage.filter(
     (match) => match.board === 2
   );
   const tableGroupB = await calculateGroupStageTable(
-    matchesGroupB,
-    tournament.groups.B
+    matchesGroup2,
+    tournament.groups.group2
   );
 
-  tournament.matches.semiFinals[0].player1 = tableGroupA[1];
-  tournament.matches.semiFinals[0].player2 = tableGroupB[0];
-  tournament.matches.semiFinals[1].player1 = tableGroupB[1];
-  tournament.matches.semiFinals[1].player2 = tableGroupA[0];
+  tournament.matches.semifinalStage[0].player1 = tableGroup1[1];
+  tournament.matches.semifinalStage[0].player2 = tableGroupB[0];
+  tournament.matches.semifinalStage[1].player1 = tableGroupB[1];
+  tournament.matches.semifinalStage[1].player2 = tableGroup1[0];
 
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
 };
@@ -307,13 +297,15 @@ const setupFinalStage = async (tournamentId) => {
 
   tournament.status = TournamentStatus.FINAL_STAGE;
 
-  tournament.matches.final.player1 = tournament.matches.semiFinals[0].winner;
-  tournament.matches.final.player2 = tournament.matches.semiFinals[1].winner;
+  tournament.matches.finalStage.player1 =
+    tournament.matches.semifinalStage[0].winner;
+  tournament.matches.finalStage.player2 =
+    tournament.matches.semifinalStage[1].winner;
 
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
 };
 
-const changeStageIfFinished = async (tournamentId) => {
+const updateStageIfFinished = async (tournamentId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
@@ -323,10 +315,10 @@ const changeStageIfFinished = async (tournamentId) => {
 
   if (tournament.status === TournamentStatus.GROUP_STAGE) {
     matches = tournament.matches.groupStage;
-  } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
-    matches = tournament.matches.semiFinals;
+  } else if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
+    matches = tournament.matches.semifinalStage;
   } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
-    matches = [tournament.matches.final];
+    matches = [tournament.matches.finalStage];
   }
 
   for (const match of matches) {
@@ -338,8 +330,8 @@ const changeStageIfFinished = async (tournamentId) => {
 
   if (isStageFinished) {
     if (tournament.status === TournamentStatus.GROUP_STAGE) {
-      await setupSemifinalsStage(Number(tournamentId));
-    } else if (tournament.status === TournamentStatus.SEMIFINALS_STAGE) {
+      await setupSemifinalStage(Number(tournamentId));
+    } else if (tournament.status === TournamentStatus.SEMIFINAL_STAGE) {
       await setupFinalStage(Number(tournamentId));
     } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
       tournament.status = TournamentStatus.FINISHED;
@@ -350,13 +342,13 @@ const changeStageIfFinished = async (tournamentId) => {
 };
 
 module.exports = {
-  createTournament,
-  openTournaments,
+  postCreateTournament,
+  getOpenTournaments,
   startTournament,
   getTournamentStageMatches,
   getTournamentStatus,
-  tournamentStageLegs,
-  tournamentStagePoints,
+  getTournamentStageLegs,
+  getTournamentStagePoints,
   saveTournamentMatch,
-  changeStageIfFinished,
+  updateStageIfFinished,
 };

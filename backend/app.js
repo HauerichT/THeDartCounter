@@ -25,7 +25,6 @@ app.use(
 );
 app.use(express.json());
 
-// Gib `io` beim Registrieren der Routen weiter
 app.use("/api/players", playerRoutes);
 app.use("/api/matches", singleMatchRoutes);
 app.use("/api/tournaments", tournamentRoutes(io));
@@ -33,9 +32,8 @@ app.use("/api/tournaments", tournamentRoutes(io));
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => console.log(`Backend läuft auf Port ${PORT}`));
 
-// Socket.IO-Logik
 io.on("connection", (socket) => {
-  console.log("Ein Benutzer ist verbunden:", socket.id);
+  console.log("Benutzer verbunden: ", socket.id);
 
   socket.on("joinTournament", (tournamentId) => {
     socket.join(`tournament_${tournamentId}`);

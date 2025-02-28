@@ -4,9 +4,9 @@ const tournamentController = require("../controllers/tournamentController");
 const router = express.Router();
 
 module.exports = (io) => {
-  router.post("/createTournament", async (req, res) => {
+  router.post("/postCreateTournament", async (req, res) => {
     try {
-      const newTournament = await tournamentController.createTournament(
+      const newTournament = await tournamentController.postCreateTournament(
         req.body
       );
 
@@ -14,42 +14,55 @@ module.exports = (io) => {
 
       res.json({
         success: true,
-        message: "Turnier erfolgreich erstellt.",
-        tournament: newTournament,
+        message: "Turnier erfolgreich erstellt!",
+        data: newTournament,
       });
-    } catch (error) {
-      console.error("Fehler beim Erstellen des Turniers:", error);
+    } catch (err) {
+      console.error("Fehler beim Erstellen des Turniers:", err);
       res.json({
         success: false,
-        message: "Interner Serverfehler.",
+        message: "Fehler beim Erstellen des Turniers!",
+        data: err,
       });
     }
   });
 
-  router.get("/openTournaments", async (req, res) => {
+  router.get("/getOpenTournaments", async (req, res) => {
     try {
-      const openTournaments = await tournamentController.openTournaments();
-      res.json(openTournaments);
-    } catch (error) {
-      console.error("Fehler beim Abrufen der Turniere:", error);
+      const openTournaments = await tournamentController.getOpenTournaments();
+
+      res.json({
+        success: true,
+        message: "Offene Turniere erfolgreich abgerufen!",
+        data: openTournaments,
+      });
+    } catch (err) {
+      console.error("Fehler beim Abrufen der offenen Turniere:", err);
       res.json({
         success: false,
-        message: "Fehler beim Abrufen der Turniere.",
+        message: "Fehler beim Abrufen der offenen Turniere!",
+        data: err,
       });
     }
   });
 
-  router.get("/:tournamentId", async (req, res) => {
+  router.get("/getTournamentById/:tournamentId", async (req, res) => {
     try {
       const tournament = await tournamentController.getTournamentById(
         req.params.tournamentId
       );
-      res.json(tournament);
-    } catch (error) {
-      console.error("Fehler beim Abrufen des Turniers:", error);
+
+      res.json({
+        success: true,
+        message: "Turnier erfolgreich abgerufen!",
+        data: tournament,
+      });
+    } catch (err) {
+      console.error("Fehler beim Abrufen des Turniers:", err);
       res.json({
         success: false,
-        message: "Fehler beim Abrufen des Turniers.",
+        message: "Fehler beim Abrufen des Turniers!",
+        data: err,
       });
     }
   });
@@ -63,6 +76,7 @@ module.exports = (io) => {
             req.params.tournamentId,
             req.params.socketId
           );
+
         res.json({
           success: true,
           message: "Spiele der aktuellen Phase erfolgreich abgerufen!",
@@ -84,6 +98,7 @@ module.exports = (io) => {
       const tournamentStatus = await tournamentController.getTournamentStatus(
         req.params.tournamentId
       );
+
       res.json({
         success: true,
         message: "Tunierstatus erfolgreich abgerufen!",
@@ -102,7 +117,9 @@ module.exports = (io) => {
   router.get("/getTournamentStageLegs/:tournamentId", async (req, res) => {
     try {
       const tournamentStageLegs =
-        await tournamentController.tournamentStageLegs(req.params.tournamentId);
+        await tournamentController.getTournamentStageLegs(
+          req.params.tournamentId
+        );
 
       res.json({
         success: true,
@@ -122,7 +139,7 @@ module.exports = (io) => {
   router.get("/getTournamentStagePoints/:tournamentId", async (req, res) => {
     try {
       const tournamentStagePoints =
-        await tournamentController.tournamentStagePoints(
+        await tournamentController.getTournamentStagePoints(
           req.params.tournamentId
         );
 
@@ -151,7 +168,7 @@ module.exports = (io) => {
         );
 
         const isStageFinished =
-          await tournamentController.changeStageIfFinished(
+          await tournamentController.updateStageIfFinished(
             req.params.tournamentId
           );
 

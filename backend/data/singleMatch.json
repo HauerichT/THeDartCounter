@@ -81,5 +81,209 @@
     "points": 301,
     "legs": 3,
     "date": 1740588522007
+  },
+  {
+    "player1": {
+      "id": 1,
+      "name": "Timo"
+    },
+    "player2": {
+      "id": 14,
+      "name": "Thomas"
+    },
+    "winner": {
+      "id": 14,
+      "name": "Thomas"
+    },
+    "points": 501,
+    "legs": 1,
+    "date": 1740685207484
+  },
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "winner": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740685479869
+  },
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "winner": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740685528120
+  },
+  {
+    "player1": {
+      "id": 2,
+      "name": "Jannis"
+    },
+    "player2": {
+      "id": 6,
+      "name": "Carsten K."
+    },
+    "winner": {
+      "id": 2,
+      "name": "Jannis"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740685615579
+  },
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740685964732
+  },
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740685989339
+  },
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 5,
+      "name": "Janis"
+    },
+    "winner": {
+      "id": 5,
+      "name": "Janis"
+    },
+    "points": 301,
+    "legs": 3,
+    "date": 1740686203136
+  },
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "points": 301,
+    "legs": 1,
+    "date": 1740736736740
+  },
+  {
+    "player1": {
+      "id": 6,
+      "name": "Carsten K."
+    },
+    "player2": {
+      "id": 14,
+      "name": "Thomas"
+    },
+    "winner": {
+      "id": 6,
+      "name": "Carsten K."
+    },
+    "points": 301,
+    "legs": 2,
+    "date": 1740736782388
+  },
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "points": 301,
+    "legs": 3,
+    "date": 1740752874523
+  },
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 9,
+      "name": "Ralf"
+    },
+    "winner": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "points": 301,
+    "legs": 3,
+    "date": 1740753196768
+  },
+  {
+    "player1": {
+      "id": 4,
+      "name": "Luca"
+    },
+    "player2": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "winner": {
+      "id": 7,
+      "name": "Carsten W."
+    },
+    "points": 501,
+    "legs": 2,
+    "date": 1740755573239
   }
 ]

@@ -5,9 +5,9 @@ const MatchMode = require("../interfaces/matchInterface");
 
 const router = express.Router();
 
-router.post("/postFinishedSingleMatch", (req, res) => {
+router.post("/postFinishedSingleMatch", async (req, res) => {
   try {
-    singleMatchController.saveSingleMatch(req.body);
+    await singleMatchController.saveSingleMatch(req.body);
     res.json({
       success: true,
       message: "Spiel erfolgreich gespeichert!",
