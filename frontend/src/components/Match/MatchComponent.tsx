@@ -172,7 +172,7 @@ export default function MatchComponent({
     <>
       <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
       <Container maxWidth={false}>
-        <MatchHeaderComponent />
+        <MatchHeaderComponent legs={legs} />
         <MatchPlayerBoxComponent
           player={player1}
           playerLegs={player1Legs}

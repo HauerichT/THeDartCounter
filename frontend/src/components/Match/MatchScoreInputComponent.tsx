@@ -14,8 +14,10 @@ export default function MatchScoreInputComponent({
   const handleScoreInput = () => {
     const input = document.querySelector("#scoreInput") as HTMLInputElement;
     const value = parseInt(input.value);
-    onSubmit(value);
-    input.value = "";
+    if (!isNaN(value)) {
+      onSubmit(value);
+      input.value = "";
+    }
   };
 
   const handleInputChange = () => {

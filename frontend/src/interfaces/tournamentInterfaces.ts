@@ -10,15 +10,21 @@ export enum TournamentStatus {
 
 export interface TournamentCreationData {
   players: Player[];
-  pointsGroup: number;
-  pointsSemifinal: number;
-  pointsFinal: number;
-  legsGroup: number;
-  legsSemifinal: number;
-  legsFinal: number;
+  pointsGroupStage: number;
+  pointsSemifinalStage: number;
+  pointsFinalStage: number;
+  legsGroupStage: number;
+  legsSemifinalStage: number;
+  legsFinalStage: number;
 }
 
 export interface Tournament {
   id: number;
   players: { length: number };
+}
+
+export interface TournamentGroupStageRanking {
+  id: number;
+  name: string;
+  wins: number;
 }

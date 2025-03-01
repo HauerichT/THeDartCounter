@@ -15,14 +15,14 @@ import { getPlayers } from "../../apis/playersApi";
 import { postCreateTournament } from "../../apis/tournamentApi";
 import { CustomDialogComponent, useDialog } from "../CustomDialogComponent";
 
-export default function TournamentSetup() {
+export default function TournamentSetupComponent() {
   const [tournamentPlayers, setTournamentPlayers] = useState<Player[]>([]);
-  const [pointsGroup, setPointsGroup] = useState<number>(301);
-  const [pointsSemifinal, setPointsSemifinal] = useState<number>(501);
-  const [pointsFinal, setPointsFinal] = useState<number>(501);
-  const [legsGroup, setLegsGroup] = useState<number>(1);
-  const [legsSemifinal, setLegsSemifinal] = useState<number>(1);
-  const [legsFinal, setLegsFinal] = useState<number>(2);
+  const [pointsGroupStage, setPointsGroup] = useState<number>(301);
+  const [pointsSemifinalStage, setPointsSemifinal] = useState<number>(501);
+  const [pointsFinalStage, setPointsFinal] = useState<number>(501);
+  const [legsGroupStage, setLegsGroup] = useState<number>(1);
+  const [legsSemifinalStage, setLegsSemifinal] = useState<number>(1);
+  const [legsFinalStage, setLegsFinal] = useState<number>(2);
   const [players, setPlayers] = useState<Player[]>([]);
   const { dialog, setDialog, showDialog } = useDialog();
 
@@ -44,12 +44,12 @@ export default function TournamentSetup() {
   const handleStartTournament = async () => {
     const resCreateTournament = await postCreateTournament({
       players: tournamentPlayers,
-      pointsGroup,
-      pointsSemifinal,
-      pointsFinal,
-      legsGroup,
-      legsSemifinal,
-      legsFinal,
+      pointsGroupStage,
+      pointsSemifinalStage,
+      pointsFinalStage,
+      legsGroupStage,
+      legsSemifinalStage,
+      legsFinalStage,
     });
     if (!resCreateTournament.success) {
       showDialog(resCreateTournament.message, "error");
@@ -93,7 +93,7 @@ export default function TournamentSetup() {
           <Typography>Gruppenphase:</Typography>
           <TextField
             type="number"
-            value={legsGroup}
+            value={legsGroupStage}
             inputProps={{ min: 1 }}
             onChange={(e) => {
               const value = Math.max(1, Number(e.target.value));
@@ -103,7 +103,7 @@ export default function TournamentSetup() {
         </Stack>
         <Stack spacing={1} direction="column" mb={2}>
           <ToggleButtonGroup
-            value={pointsGroup}
+            value={pointsGroupStage}
             exclusive
             onChange={(_e, newPoints) => {
               if (newPoints !== null) {
@@ -122,7 +122,7 @@ export default function TournamentSetup() {
           <Typography>Halbfinalphase:</Typography>
           <TextField
             type="number"
-            value={legsSemifinal}
+            value={legsSemifinalStage}
             inputProps={{ min: 1 }}
             onChange={(e) => {
               const value = Math.max(1, Number(e.target.value));
@@ -132,7 +132,7 @@ export default function TournamentSetup() {
         </Stack>
         <Stack spacing={1} direction="column" mb={2}>
           <ToggleButtonGroup
-            value={pointsSemifinal}
+            value={pointsSemifinalStage}
             exclusive
             onChange={(_e, newPoints) => {
               if (newPoints !== null) {
@@ -151,7 +151,7 @@ export default function TournamentSetup() {
           <Typography>Finalphase:</Typography>
           <TextField
             type="number"
-            value={legsFinal}
+            value={legsFinalStage}
             inputProps={{ min: 1 }}
             onChange={(e) => {
               const value = Math.max(1, Number(e.target.value));
@@ -161,7 +161,7 @@ export default function TournamentSetup() {
         </Stack>
         <Stack spacing={1} direction="column" mb={2}>
           <ToggleButtonGroup
-            value={pointsFinal}
+            value={pointsFinalStage}
             exclusive
             onChange={(_e, newPoints) => {
               if (newPoints !== null) {
