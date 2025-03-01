@@ -192,5 +192,32 @@ module.exports = (io) => {
     }
   );
 
+  router.get(
+    "/getTournamentGroupStageRanking/:tournamentId/:socketId",
+    async (req, res) => {
+      try {
+        const tournamentGroupStageRanking =
+          await tournamentController.getTournamentGroupStageRanking(
+            req.params.tournamentId,
+            req.params.socketId
+          );
+        console.log(tournamentGroupStageRanking);
+
+        res.json({
+          success: true,
+          message: "Aktuelle Tabelle erfolgreich abgerufen!",
+          data: tournamentGroupStageRanking,
+        });
+      } catch (err) {
+        console.error("Fehler beim Abrufen der aktuellen Tabelle:", err);
+        res.json({
+          success: false,
+          message: "Fehler beim Abrufen der aktuellen Tabelle!",
+          data: err,
+        });
+      }
+    }
+  );
+
   return router;
 };

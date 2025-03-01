@@ -100,8 +100,8 @@ const postCreateTournament = async (tournamentData) => {
     legsSemifinalStage,
     legsFinalStage,
     groups: {
-      group1: groupA,
-      group2: groupB,
+      group1: group1,
+      group2: group2,
     },
     matches: {
       groupStage: [...balancedGroup1Matches, ...balancedGroup2Matches],
@@ -228,7 +228,7 @@ const saveTournamentMatch = async (tournamentId, matchData) => {
   await fs.writeFile(tournamentsFilePath, JSON.stringify(tournaments, null, 2));
 };
 
-const calculateGroupStageTable = async (groupMatches, group) => {
+const calculateGroupStageRanking = async (groupMatches, group) => {
   const scores = {};
   group.forEach(
     (player) =>
@@ -236,27 +236,39 @@ const calculateGroupStageTable = async (groupMatches, group) => {
         id: player.id,
         name: player.name,
         wins: 0,
-        directWins: {},
       })
   );
 
+  // Siege zählen
   groupMatches.forEach((match) => {
-    const winnerId = match.winner.id;
-    scores[winnerId].wins++;
-
-    const loserId =
-      match.player1.id === winnerId ? match.player2.id : match.player1.id;
-    scores[winnerId].directWins[loserId] =
-      (scores[winnerId].directWins[loserId] || 0) + 1;
+    if (match.winner) {
+      const winnerId = match.winner.id;
+      scores[winnerId].wins++;
+    }
   });
 
-  const ranking = Object.values(scores)
-    .sort((a, b) => {
-      if (b.wins !== a.wins) return b.wins - a.wins;
-      return (b.directWins[a.id] || 0) - (a.directWins[b.id] || 0);
-    })
-    .map(({ id, name }) => ({ id, name }));
-  return ranking;
+  const sortedScores = Object.values(scores).sort((p1, p2) => {
+    // Zuerst nach Anzahl der Siege sortieren (absteigend)
+    if (p2.wins !== p1.wins) {
+      return p2.wins - p1.wins;
+    }
+
+    // Falls beide Spieler gleich viele Siege haben, direkter Vergleich entscheidet
+    const directMatch = groupMatches.find(
+      (match) =>
+        (match.player1.id === p1.id && match.player2.id === p2.id) ||
+        (match.player1.id === p2.id && match.player2.id === p1.id)
+    );
+
+    if (directMatch && directMatch.winner) {
+      if (directMatch.winner.id === p1.id) return -1; // p1 gewinnt direkten Vergleich
+      if (directMatch.winner.id === p2.id) return 1; // p2 gewinnt direkten Vergleich
+    }
+
+    return 0; // Falls kein direkter Vergleich möglich, bleibt Reihenfolge gleich
+  });
+
+  return sortedScores;
 };
 
 const setupSemifinalStage = async (tournamentId) => {
@@ -269,7 +281,7 @@ const setupSemifinalStage = async (tournamentId) => {
   const matchesGroup1 = tournament.matches.groupStage.filter(
     (match) => match.board === 1
   );
-  const tableGroup1 = await calculateGroupStageTable(
+  const tableGroup1 = await calculateGroupStageRanking(
     matchesGroup1,
     tournament.groups.group1
   );
@@ -277,7 +289,7 @@ const setupSemifinalStage = async (tournamentId) => {
   const matchesGroup2 = tournament.matches.groupStage.filter(
     (match) => match.board === 2
   );
-  const tableGroupB = await calculateGroupStageTable(
+  const tableGroupB = await calculateGroupStageRanking(
     matchesGroup2,
     tournament.groups.group2
   );
@@ -341,6 +353,29 @@ const updateStageIfFinished = async (tournamentId) => {
   return isStageFinished;
 };
 
+const getTournamentGroupStageRanking = async (tournamentId, socketId) => {
+  const data = await fs.readFile(tournamentsFilePath, "utf8");
+  let tournaments = JSON.parse(data);
+  const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  const matchesGroup1 = tournament.matches.groupStage.filter(
+    (match) => match.board === 1
+  );
+  const matchesGroup2 = tournament.matches.groupStage.filter(
+    (match) => match.board === 2
+  );
+
+  const groupMatches =
+    tournament.board1SocketId === socketId ? matchesGroup1 : matchesGroup2;
+  const group =
+    tournament.board1SocketId === socketId
+      ? tournament.groups.group1
+      : tournament.groups.group2;
+
+  const table = await calculateGroupStageRanking(groupMatches, group);
+  return table;
+};
+
 module.exports = {
   postCreateTournament,
   getOpenTournaments,
@@ -351,4 +386,5 @@ module.exports = {
   getTournamentStagePoints,
   saveTournamentMatch,
   updateStageIfFinished,
+  getTournamentGroupStageRanking,
 };
