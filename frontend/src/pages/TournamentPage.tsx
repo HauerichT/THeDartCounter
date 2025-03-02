@@ -43,9 +43,10 @@ export default function TournamentPage() {
   }, [tournamentId]);
 
   useEffect(() => {
-    socket.on("changedStage", async () => {
+    socket.on("changedStage", async (value) => {
       await fetchTournamentStatus();
       await fetchTournamentStageMatches();
+      showDialog(`${value} startet!`, "success");
     });
 
     return () => {

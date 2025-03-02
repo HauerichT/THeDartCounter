@@ -1,11 +1,11 @@
 import { Player } from "./playerInterfaces";
 
 export enum TournamentStatus {
-  OPEN,
-  GROUP_STAGE,
-  SEMIFINAL_STAGE,
-  FINAL_STAGE,
-  FINISHED,
+  OPEN = "Offen",
+  GROUP_STAGE = "Gruppenphase",
+  SEMIFINAL_STAGE = "Halbfinalphase",
+  FINAL_STAGE = "Finalphase",
+  FINISHED = "Beendet",
 }
 
 export interface TournamentCreationData {
