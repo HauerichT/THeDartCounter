@@ -1,7 +1,5 @@
 const express = require("express");
 const singleMatchController = require("../controllers/singleMatchController");
-const tournamentController = require("../controllers/tournamentController");
-const MatchMode = require("../interfaces/matchInterface");
 
 const router = express.Router();
 

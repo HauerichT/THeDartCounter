@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -9,10 +10,9 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { MatchData } from "../../interfaces/matchInterfaces";
-import { getPlayers } from "../../apis/playersApi";
 import { Player } from "../../interfaces/playerInterfaces";
+import { getPlayers } from "../../apis/playersApi";
 import { CustomDialogComponent, useDialog } from "../CustomDialogComponent";
 
 export default function SingleMatchSetupComponent({

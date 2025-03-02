@@ -1,6 +1,6 @@
 import { Box, Grid2, Stack, Typography } from "@mui/material";
-import { Player } from "../../interfaces/playerInterfaces";
 import { useTheme } from "@mui/material/styles";
+import { Player } from "../../interfaces/playerInterfaces";
 
 export default function MatchPlayerBoxComponent({
   player,
@@ -34,7 +34,6 @@ export default function MatchPlayerBoxComponent({
         justifyContent="space-between"
         spacing={2}
       >
-        {/* Linke Seite */}
         <Grid2
           size={{ xs: 12, sm: 3 }}
           sx={{
@@ -50,7 +49,6 @@ export default function MatchPlayerBoxComponent({
           </Stack>
         </Grid2>
 
-        {/* Mitte (Punkteanzeige) */}
         <Grid2
           size={{ xs: 12, sm: 6 }}
           sx={{
@@ -68,7 +66,6 @@ export default function MatchPlayerBoxComponent({
           </Typography>
         </Grid2>
 
-        {/* Rechte Seite */}
         <Grid2
           size={{ xs: 12, sm: 3 }}
           sx={{
@@ -78,16 +75,16 @@ export default function MatchPlayerBoxComponent({
         >
           <Stack spacing={1} alignItems={{ xs: "center", sm: "flex-end" }}>
             <Typography variant="body2">
-              Letze Aufnahme: {playerLastScore ? playerLastScore : "-"}
+              Letzte Aufnahme:{" "}
+              {playerLastScore !== null ? playerLastScore : "-"}
             </Typography>
             <Typography variant="body2">
-              {playerLastScore
-                ? "Ø: " + (playerScoreTotal / playerDarts).toFixed(2)
-                : "Ø: -"}
+              Ø:{" "}
+              {playerDarts > 0
+                ? (playerScoreTotal / playerDarts).toFixed(2)
+                : "-"}
             </Typography>
-            <Typography variant="body2">
-              Geworfene Darts: {playerDarts}
-            </Typography>
+            <Typography variant="body2">Aufnahmen: {playerDarts}</Typography>
           </Stack>
         </Grid2>
       </Grid2>

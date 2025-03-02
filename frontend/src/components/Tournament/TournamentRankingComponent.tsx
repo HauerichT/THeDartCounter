@@ -36,7 +36,7 @@ export default function TournamentRankingComponent({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3}>No data available</TableCell>
+                <TableCell colSpan={3}>Keine Daten vorhanden!</TableCell>
               </TableRow>
             )}
           </TableBody>

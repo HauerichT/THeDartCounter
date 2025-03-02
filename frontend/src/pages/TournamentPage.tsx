@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box, Container, Grid2, Typography } from "@mui/material";
 import {
   getTournamentStageMatches,
   getTournamentStageLegs,
@@ -9,18 +10,19 @@ import {
   getTournamentStatus,
   getTournamentGroupStageRanking,
 } from "../apis/tournamentApi";
-import MatchComponent from "../components/Match/MatchComponent";
 import { MatchData } from "../interfaces/matchInterfaces";
 import {
   TournamentStatus,
   TournamentGroupStageRanking,
 } from "../interfaces/tournamentInterfaces";
-import socket from "../utils/socket";
 import {
   CustomDialogComponent,
   useDialog,
 } from "../components/CustomDialogComponent";
 import TournamentRankingComponent from "../components/Tournament/TournamentRankingComponent";
+import TournamentMatchesWithResultComponent from "../components/Tournament/TournamentMatchesWithResultComponent";
+import MatchComponent from "../components/Match/MatchComponent";
+import socket from "../utils/socket";
 
 export default function TournamentPage() {
   const { tournamentId } = useParams<{ tournamentId: string }>();
@@ -31,8 +33,10 @@ export default function TournamentPage() {
     TournamentStatus.OPEN
   );
   const [ranking, setRanking] = useState<TournamentGroupStageRanking[]>([]);
+  const [matchesWithResult, setMatchesWithResult] = useState<MatchData[]>([]);
 
   const { dialog, setDialog, showDialog } = useDialog();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTournamentStatus();
@@ -44,9 +48,15 @@ export default function TournamentPage() {
 
   useEffect(() => {
     socket.on("changedStage", async (value) => {
-      await fetchTournamentStatus();
-      await fetchTournamentStageMatches();
-      showDialog(`${value} startet!`, "success");
+      if (value === TournamentStatus.FINISHED) {
+        showDialog("Tunier beendet!", "success", () => {
+          navigate(`/tournament-overview`);
+        });
+      } else {
+        await fetchTournamentStatus();
+        await fetchTournamentStageMatches();
+        showDialog(`${value} startet!`, "success");
+      }
     });
 
     return () => {
@@ -65,7 +75,24 @@ export default function TournamentPage() {
   };
 
   const fetchTournamentStageMatches = async () => {
-    // Get the stage matches
+    const resTournamentStageLegs = await getTournamentStageLegs(
+      Number(tournamentId)
+    );
+    if (!resTournamentStageLegs.success) {
+      showDialog(resTournamentStageLegs.message, "error");
+      return;
+    }
+    setLegs(resTournamentStageLegs.data);
+
+    const resTournamentStagePoints = await getTournamentStagePoints(
+      Number(tournamentId)
+    );
+    if (!resTournamentStagePoints.success) {
+      showDialog(resTournamentStagePoints.message, "error");
+      return;
+    }
+    setPoints(resTournamentStagePoints.data);
+
     const resTournamentStageMatches = await getTournamentStageMatches(
       Number(tournamentId)
     );
@@ -79,26 +106,7 @@ export default function TournamentPage() {
       : [resTournamentStageMatches.data];
 
     setMatches(matchesData);
-
-    // Get the stage leg amount
-    const resTournamentStageLegs = await getTournamentStageLegs(
-      Number(tournamentId)
-    );
-    if (!resTournamentStageLegs.success) {
-      showDialog(resTournamentStageLegs.message, "error");
-      return;
-    }
-    setLegs(resTournamentStageLegs.data);
-
-    // Get the group point amount
-    const resTournamentStagePoints = await getTournamentStagePoints(
-      Number(tournamentId)
-    );
-    if (!resTournamentStagePoints.success) {
-      showDialog(resTournamentStagePoints.message, "error");
-      return;
-    }
-    setPoints(resTournamentStagePoints.data);
+    setMatchesWithResult(matchesData);
   };
 
   const handleMatchFinished = async (matchData: MatchData) => {
@@ -110,9 +118,19 @@ export default function TournamentPage() {
       showDialog(resPostFinishedMatch.message, "error");
       return;
     }
-
-    fetchTournamentGroupStageRanking();
     setMatches((prevMatches) => prevMatches.slice(1));
+
+    if (tournamentStatus === TournamentStatus.GROUP_STAGE) {
+      fetchTournamentGroupStageRanking();
+
+      const updatedMatchesWithResult = matchesWithResult.map((match) =>
+        match.player1.id === matchData.player1.id &&
+        match.player2.id === matchData.player2.id
+          ? { ...match, winner: matchData.winner }
+          : match
+      );
+      setMatchesWithResult(updatedMatchesWithResult);
+    }
   };
 
   const fetchTournamentGroupStageRanking = async () => {
@@ -129,25 +147,64 @@ export default function TournamentPage() {
   return (
     <>
       <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
-      {matches.length > 0 && points !== undefined && legs !== undefined ? (
-        <>
-          {tournamentStatus === TournamentStatus.GROUP_STAGE ? (
-            <TournamentRankingComponent ranking={ranking} />
-          ) : null}
-          <MatchComponent
-            key={matches[0].player1.id + "-" + matches[0].player2.id}
-            matchData={matches[0]}
-            points={points}
-            legs={legs}
-            starter={matches[0].player1}
-            onFinishedMatch={handleMatchFinished}
-          />
-        </>
-      ) : tournamentStatus === TournamentStatus.FINAL_STAGE ? (
-        <Typography>Keine weiteren Spiele auf diesem Board.</Typography>
-      ) : (
-        <Typography>Warten auf nächstes Match...</Typography>
-      )}
+      <Container maxWidth={false}>
+        {matches.length > 0 && points !== undefined && legs !== undefined ? (
+          <Grid2 container spacing={2}>
+            <Grid2 size={{ xs: 12, sm: 12 }}>
+              <Box
+                p={2}
+                boxShadow={2}
+                borderRadius={2}
+                bgcolor="background.paper"
+              >
+                <MatchComponent
+                  key={matches[0].player1.id + "-" + matches[0].player2.id}
+                  matchData={matches[0]}
+                  points={points}
+                  legs={legs}
+                  starter={matches[0].player1}
+                  onFinishedMatch={handleMatchFinished}
+                />
+              </Box>
+            </Grid2>
+
+            {tournamentStatus === TournamentStatus.GROUP_STAGE && (
+              <>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
+                  <Box
+                    p={2}
+                    boxShadow={2}
+                    borderRadius={2}
+                    bgcolor="background.paper"
+                  >
+                    <TournamentRankingComponent ranking={ranking} />
+                  </Box>
+                </Grid2>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
+                  <Box
+                    p={2}
+                    boxShadow={2}
+                    borderRadius={2}
+                    bgcolor="background.paper"
+                  >
+                    <TournamentMatchesWithResultComponent
+                      matchesWithResult={matchesWithResult}
+                    />
+                  </Box>
+                </Grid2>
+              </>
+            )}
+          </Grid2>
+        ) : tournamentStatus === TournamentStatus.FINAL_STAGE ? (
+          <Typography variant="h6" align="center">
+            Keine weiteren Spiele auf diesem Board.
+          </Typography>
+        ) : (
+          <Typography variant="h6" align="center">
+            Warten auf nächstes Match...
+          </Typography>
+        )}
+      </Container>
     </>
   );
 }

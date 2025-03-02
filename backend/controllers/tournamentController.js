@@ -12,58 +12,45 @@ const shuffleArray = (array) => {
   return array;
 };
 
-const generateGroupMatches = (group, board) => {
+const generateRoundRobinMatches = (players, board) => {
+  let playersOfGroup = [...players];
+  if (players.length % 2 !== 0) {
+    playersOfGroup.push(null);
+  }
+  const n = playersOfGroup.length;
   const matches = [];
-  for (let i = 0; i < group.length; i++) {
-    for (let j = i + 1; j < group.length; j++) {
-      matches.push({
-        player1: group[i],
-        player2: group[j],
-        board,
-        winner: null,
-      });
+
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n / 2; j++) {
+      const player1 = playersOfGroup[j];
+      const player2 = playersOfGroup[n - 1 - j];
+
+      if (player1 !== null && player2 !== null) {
+        if (i % 2 === 0) {
+          matches.push({
+            player1: player1,
+            player2: player2,
+            board: board,
+            winner: null,
+          });
+        } else {
+          matches.push({
+            player1: player2,
+            player2: player1,
+            board: board,
+            winner: null,
+          });
+        }
+      }
     }
+    playersOfGroup = [
+      playersOfGroup[0],
+      playersOfGroup[n - 1],
+      ...playersOfGroup.slice(1, n - 1),
+    ];
   }
+
   return matches;
-};
-
-const balanceMatches = (matches) => {
-  const balanced = [];
-  const lastPlayers = new Set();
-
-  while (matches.length > 0) {
-    let foundMatch = false;
-
-    for (let i = 0; i < matches.length; i++) {
-      const match = matches[i];
-
-      if (!match || !match.player1 || !match.player2) continue;
-
-      if (!lastPlayers.has(match.player1) && !lastPlayers.has(match.player2)) {
-        balanced.push(match);
-
-        lastPlayers.clear();
-        lastPlayers.add(match.player1);
-        lastPlayers.add(match.player2);
-
-        matches.splice(i, 1);
-        foundMatch = true;
-        break;
-      }
-    }
-
-    if (!foundMatch) {
-      const match = matches.shift();
-      if (match) {
-        balanced.push(match);
-        lastPlayers.clear();
-        lastPlayers.add(match.player1);
-        lastPlayers.add(match.player2);
-      }
-    }
-  }
-
-  return balanced;
 };
 
 const postCreateTournament = async (tournamentData) => {
@@ -82,11 +69,8 @@ const postCreateTournament = async (tournamentData) => {
   const group1 = shuffledPlayers.slice(0, mid);
   const group2 = shuffledPlayers.slice(mid);
 
-  const group1Matches = generateGroupMatches(group1, 1);
-  const group2Matches = generateGroupMatches(group2, 2);
-
-  const balancedGroup1Matches = balanceMatches(group1Matches);
-  const balancedGroup2Matches = balanceMatches(group2Matches);
+  const group1Matches = generateRoundRobinMatches(group1, 1);
+  const group2Matches = generateRoundRobinMatches(group2, 2);
 
   const newTournament = {
     id: Date.now(),
@@ -104,7 +88,7 @@ const postCreateTournament = async (tournamentData) => {
       group2: group2,
     },
     matches: {
-      groupStage: [...balancedGroup1Matches, ...balancedGroup2Matches],
+      groupStage: [...group1Matches, ...group2Matches],
       semifinalStage: [
         { player1: null, player2: null, winner: null, board: 1 },
         { player1: null, player2: null, winner: null, board: 2 },
@@ -239,7 +223,6 @@ const calculateGroupStageRanking = async (groupMatches, group) => {
       })
   );
 
-  // Siege zählen
   groupMatches.forEach((match) => {
     if (match.winner) {
       const winnerId = match.winner.id;
@@ -248,12 +231,10 @@ const calculateGroupStageRanking = async (groupMatches, group) => {
   });
 
   const sortedScores = Object.values(scores).sort((p1, p2) => {
-    // Zuerst nach Anzahl der Siege sortieren (absteigend)
     if (p2.wins !== p1.wins) {
       return p2.wins - p1.wins;
     }
 
-    // Falls beide Spieler gleich viele Siege haben, direkter Vergleich entscheidet
     const directMatch = groupMatches.find(
       (match) =>
         (match.player1.id === p1.id && match.player2.id === p2.id) ||
@@ -261,11 +242,11 @@ const calculateGroupStageRanking = async (groupMatches, group) => {
     );
 
     if (directMatch && directMatch.winner) {
-      if (directMatch.winner.id === p1.id) return -1; // p1 gewinnt direkten Vergleich
-      if (directMatch.winner.id === p2.id) return 1; // p2 gewinnt direkten Vergleich
+      if (directMatch.winner.id === p1.id) return -1;
+      if (directMatch.winner.id === p2.id) return 1;
     }
 
-    return 0; // Falls kein direkter Vergleich möglich, bleibt Reihenfolge gleich
+    return 0;
   });
 
   return sortedScores;
@@ -347,6 +328,10 @@ const updateStageIfFinished = async (tournamentId) => {
       await setupFinalStage(Number(tournamentId));
     } else if (tournament.status === TournamentStatus.FINAL_STAGE) {
       tournament.status = TournamentStatus.FINISHED;
+      await fs.writeFile(
+        tournamentsFilePath,
+        JSON.stringify(tournaments, null, 2)
+      );
     }
   }
 

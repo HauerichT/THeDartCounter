@@ -14,7 +14,6 @@ export default function HomePage() {
       }}
     >
       <Grid2 container spacing={2} sx={{ height: "100%", width: "100%" }}>
-        {/* Erste Reihe mit zwei 50%-Buttons */}
         <Grid2 size={{ xs: 12, sm: 6 }}>
           <Button
             variant="contained"

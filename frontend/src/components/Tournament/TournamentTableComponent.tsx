@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -12,11 +13,10 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { useNavigate } from "react-router-dom";
-import { getOpenTournaments } from "../../apis/tournamentApi";
 import { Tournament } from "../../interfaces/tournamentInterfaces";
-import socket from "../../utils/socket";
+import { getOpenTournaments } from "../../apis/tournamentApi";
 import { CustomDialogComponent, useDialog } from "../CustomDialogComponent";
+import socket from "../../utils/socket";
 
 export default function TournamentsTable() {
   const [openTournaments, setOpenTournaments] = useState<Tournament[]>([]);

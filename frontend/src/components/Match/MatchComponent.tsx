@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Container } from "@mui/material";
 import {
   MatchData,
   MatchProps,
@@ -171,50 +170,48 @@ export default function MatchComponent({
   return (
     <>
       <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
-      <Container maxWidth={false}>
-        <MatchHeaderComponent legs={legs} />
-        <MatchPlayerBoxComponent
-          player={player1}
-          playerLegs={player1Legs}
-          playerPoints={player1Points}
-          playerDarts={player1Darts}
-          playerScoreTotal={player1ScoreTotal}
-          playerLastScore={
-            scores.length > 0
-              ? scores
-                  .slice()
-                  .reverse()
-                  .find((score) => score.player1score !== null)?.player1score ??
-                null
-              : null
-          }
-          isActive={currentPlayerId === player1.id}
-        />
+      <MatchHeaderComponent legs={legs} />
+      <MatchPlayerBoxComponent
+        player={player1}
+        playerLegs={player1Legs}
+        playerPoints={player1Points}
+        playerDarts={player1Darts}
+        playerScoreTotal={player1ScoreTotal}
+        playerLastScore={
+          scores.length > 0
+            ? scores
+                .slice()
+                .reverse()
+                .find((score) => score.player1score !== null)?.player1score ??
+              null
+            : null
+        }
+        isActive={currentPlayerId === player1.id}
+      />
 
-        <MatchPlayerBoxComponent
-          player={player2}
-          playerLegs={player2Legs}
-          playerPoints={player2Points}
-          playerDarts={player2Darts}
-          playerScoreTotal={player2ScoreTotal}
-          playerLastScore={
-            scores.length > 0
-              ? scores
-                  .slice()
-                  .reverse()
-                  .find((score) => score.player2score !== null)?.player2score ??
-                null
-              : null
-          }
-          isActive={currentPlayerId === player2.id}
-        />
+      <MatchPlayerBoxComponent
+        player={player2}
+        playerLegs={player2Legs}
+        playerPoints={player2Points}
+        playerDarts={player2Darts}
+        playerScoreTotal={player2ScoreTotal}
+        playerLastScore={
+          scores.length > 0
+            ? scores
+                .slice()
+                .reverse()
+                .find((score) => score.player2score !== null)?.player2score ??
+              null
+            : null
+        }
+        isActive={currentPlayerId === player2.id}
+      />
 
-        <MatchScoreInputComponent
-          onSubmit={handleScoreSubmit}
-          onUndo={handleUndo}
-          canUndo={scores.length > 0}
-        />
-      </Container>
+      <MatchScoreInputComponent
+        onSubmit={handleScoreSubmit}
+        onUndo={handleUndo}
+        canUndo={scores.length > 0}
+      />
     </>
   );
 }

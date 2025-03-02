@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/material";
-import SingleMatchSetupComponent from "../components/SingleMatch/SingleMatchSetupComponent";
-import MatchComponent from "../components/Match/MatchComponent";
 import { MatchData } from "../interfaces/matchInterfaces";
 import { postFinishedSingleMatch } from "../apis/singleMatchApi";
+import SingleMatchSetupComponent from "../components/SingleMatch/SingleMatchSetupComponent";
+import MatchComponent from "../components/Match/MatchComponent";
 import {
   useDialog,
   CustomDialogComponent,
 } from "../components/CustomDialogComponent";
-import { useNavigate } from "react-router-dom";
 
 export default function SingleMatchPage() {
   const [match, setMatch] = useState<MatchData | null>(() => {

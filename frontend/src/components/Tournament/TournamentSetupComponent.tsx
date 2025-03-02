@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -9,7 +10,6 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { Player } from "../../interfaces/playerInterfaces";
 import { getPlayers } from "../../apis/playersApi";
 import { postCreateTournament } from "../../apis/tournamentApi";

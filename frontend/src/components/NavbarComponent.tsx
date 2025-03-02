@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 export default function NavbarComponent() {
