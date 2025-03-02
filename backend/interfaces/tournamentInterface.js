@@ -1,9 +1,9 @@
 const TournamentStatus = Object.freeze({
-  OPEN: 0,
-  GROUP_STAGE: 1,
-  SEMIFINAL_STAGE: 2,
-  FINAL_STAGE: 3,
-  FINISHED: 4,
+  OPEN: "Offen",
+  GROUP_STAGE: "Gruppenphase",
+  SEMIFINAL_STAGE: "Halbfinalphase",
+  FINAL_STAGE: "Finalphase",
+  FINISHED: "Beendet",
 });
 
 module.exports = TournamentStatus;

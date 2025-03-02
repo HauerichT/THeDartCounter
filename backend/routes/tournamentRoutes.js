@@ -173,7 +173,12 @@ module.exports = (io) => {
           );
 
         if (isStageFinished) {
-          io.to(`tournament_${req.params.tournamentId}`).emit("changedStage");
+          io.to(`tournament_${req.params.tournamentId}`).emit(
+            "changedStage",
+            await tournamentController.getTournamentStatus(
+              req.params.tournamentId
+            )
+          );
         }
 
         res.json({
@@ -201,7 +206,6 @@ module.exports = (io) => {
             req.params.tournamentId,
             req.params.socketId
           );
-        console.log(tournamentGroupStageRanking);
 
         res.json({
           success: true,
