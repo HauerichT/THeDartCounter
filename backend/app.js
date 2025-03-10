@@ -11,18 +11,18 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // Erlaubt alle Ursprünge
     methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization", "token-auth", "user-id"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   },
 });
 
 app.use(
   cors({
-    origin: "*",
+    origin: "*", // Erlaubt alle Ursprünge
     methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization", "token-auth", "user-id"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
