@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 import { API_URL } from "../apis/configApi";
 
 const socket = io(API_URL);

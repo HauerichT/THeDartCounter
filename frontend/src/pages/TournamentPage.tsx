@@ -47,7 +47,7 @@ export default function TournamentPage() {
   }, [tournamentId]);
 
   useEffect(() => {
-    socket.on("changedStage", async (value) => {
+    socket.on("changedStage", async (value: TournamentStatus) => {
       if (value === TournamentStatus.FINISHED) {
         showDialog("Tunier beendet!", "success", () => {
           navigate(`/tournament-overview`);
