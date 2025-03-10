@@ -1,1 +1,273 @@
-[]
+[
+  {
+    "id": 1741113823987,
+    "board1SocketId": "oKkF_OufndaqZ1Z0AAAD",
+    "board2SocketId": "vd5YUAyPtT93WVHQAAAB",
+    "players": [
+      {
+        "id": 12,
+        "name": "Ernst"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 9,
+        "name": "Ralf"
+      },
+      {
+        "id": 7,
+        "name": "Carsten W."
+      },
+      {
+        "id": 10,
+        "name": "Tober"
+      },
+      {
+        "id": 13,
+        "name": "Fridde"
+      },
+      {
+        "id": 1,
+        "name": "Timo"
+      }
+    ],
+    "pointsGroupStage": 301,
+    "pointsSemifinalStage": 301,
+    "pointsFinalStage": 301,
+    "legsGroupStage": 1,
+    "legsSemifinalStage": 1,
+    "legsFinalStage": 2,
+    "groups": {
+      "group1": [
+        {
+          "id": 12,
+          "name": "Ernst"
+        },
+        {
+          "id": 4,
+          "name": "Luca"
+        },
+        {
+          "id": 9,
+          "name": "Ralf"
+        },
+        {
+          "id": 7,
+          "name": "Carsten W."
+        }
+      ],
+      "group2": [
+        {
+          "id": 10,
+          "name": "Tober"
+        },
+        {
+          "id": 13,
+          "name": "Fridde"
+        },
+        {
+          "id": 1,
+          "name": "Timo"
+        }
+      ]
+    },
+    "matches": {
+      "groupStage": [
+        {
+          "player1": {
+            "id": 12,
+            "name": "Ernst"
+          },
+          "player2": {
+            "id": 7,
+            "name": "Carsten W."
+          },
+          "board": 1,
+          "winner": {
+            "id": 12,
+            "name": "Ernst"
+          }
+        },
+        {
+          "player1": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "player2": {
+            "id": 9,
+            "name": "Ralf"
+          },
+          "board": 1,
+          "winner": {
+            "id": 4,
+            "name": "Luca"
+          }
+        },
+        {
+          "player1": {
+            "id": 9,
+            "name": "Ralf"
+          },
+          "player2": {
+            "id": 12,
+            "name": "Ernst"
+          },
+          "board": 1,
+          "winner": {
+            "id": 9,
+            "name": "Ralf"
+          }
+        },
+        {
+          "player1": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "player2": {
+            "id": 7,
+            "name": "Carsten W."
+          },
+          "board": 1,
+          "winner": {
+            "id": 4,
+            "name": "Luca"
+          }
+        },
+        {
+          "player1": {
+            "id": 12,
+            "name": "Ernst"
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca"
+          },
+          "board": 1,
+          "winner": {
+            "id": 12,
+            "name": "Ernst"
+          }
+        },
+        {
+          "player1": {
+            "id": 9,
+            "name": "Ralf"
+          },
+          "player2": {
+            "id": 7,
+            "name": "Carsten W."
+          },
+          "board": 1,
+          "winner": {
+            "id": 9,
+            "name": "Ralf"
+          }
+        },
+        {
+          "player1": {
+            "id": 13,
+            "name": "Fridde"
+          },
+          "player2": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "board": 2,
+          "winner": {
+            "id": 13,
+            "name": "Fridde"
+          }
+        },
+        {
+          "player1": {
+            "id": 1,
+            "name": "Timo"
+          },
+          "player2": {
+            "id": 10,
+            "name": "Tober"
+          },
+          "board": 2,
+          "winner": {
+            "id": 1,
+            "name": "Timo"
+          }
+        },
+        {
+          "player1": {
+            "id": 10,
+            "name": "Tober"
+          },
+          "player2": {
+            "id": 13,
+            "name": "Fridde"
+          },
+          "board": 2,
+          "winner": {
+            "id": 10,
+            "name": "Tober"
+          }
+        }
+      ],
+      "semifinalStage": [
+        {
+          "player1": {
+            "id": 9,
+            "name": "Ralf",
+            "wins": 2
+          },
+          "player2": {
+            "id": 1,
+            "name": "Timo",
+            "wins": 1
+          },
+          "winner": {
+            "id": 9,
+            "name": "Ralf",
+            "wins": 2
+          },
+          "board": 1
+        },
+        {
+          "player1": {
+            "id": 10,
+            "name": "Tober",
+            "wins": 1
+          },
+          "player2": {
+            "id": 4,
+            "name": "Luca",
+            "wins": 2
+          },
+          "winner": {
+            "id": 10,
+            "name": "Tober",
+            "wins": 1
+          },
+          "board": 2
+        }
+      ],
+      "finalStage": {
+        "player1": {
+          "id": 9,
+          "name": "Ralf",
+          "wins": 2
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober",
+          "wins": 1
+        },
+        "winner": {
+          "id": 9,
+          "name": "Ralf",
+          "wins": 2
+        },
+        "board": 1
+      }
+    },
+    "status": "Beendet"
+  }
+]

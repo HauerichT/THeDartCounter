@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  matchesAsPlayer1 Match[]            @relation("Player1")
+  matchesAsPlayer2 Match[]            @relation("Player2")
+  tournaments      TournamentPlayer[]
+  wonMatches       Match[]            @relation("Winner")
+}
+
+model Tournament {
+  id                      Int                @id @default(autoincrement())
+  pointsGroupStage        Int
+  pointsQuarterfinalStage Int
+  pointsSemifinalStage    Int
+  pointsFinalStage        Int
+  legsGroupStage          Int
+  legsQuarterfinalStage   Int
+  legsSemifinalStage      Int
+  legsFinalStage          Int
+  boards                  Int
+  players                 TournamentPlayer[]
+  matches                 Match[]
+  status                  String
+}
+
+model TournamentPlayer {
+  id           Int        @id @default(autoincrement())
+  player       Player     @relation(fields: [playerId], references: [id])
+  playerId     Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+}
+
+model Match {
+  id           Int             @id @default(autoincrement())
+  tournament   Tournament?     @relation(fields: [tournamentId], references: [id])
+  tournamentId Int?
+  stage        TournamentStage
+  player1      Player          @relation("Player1", fields: [player1Id], references: [id])
+  player1Id    Int
+  player2      Player          @relation("Player2", fields: [player2Id], references: [id])
+  player2Id    Int
+  winner       Player?         @relation("Winner", fields: [winnerId], references: [id])
+  winnerId     Int?
+  points       Int
+  legs         Int
+  sets         Int?
+}
+
+enum TournamentStage {
+  GROUP
+  QUARTERFINAL
+  SEMIFINAL
+  FINAL
+  SINGLE
+}
