@@ -11,16 +11,19 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization", "token-auth", "user-id"],
+    credentials: true,
   },
 });
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "token-auth", "user-id"],
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -29,8 +32,7 @@ app.use("/api/players", playerRoutes);
 app.use("/api/matches", singleMatchRoutes);
 app.use("/api/tournaments", tournamentRoutes(io));
 
-const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => console.log(`Backend läuft auf Port ${PORT}`));
+const PORT = 8000;
 
 io.on("connection", (socket) => {
   console.log("Benutzer verbunden: ", socket.id);
@@ -56,3 +58,5 @@ io.on("connection", (socket) => {
     console.log("Ein Benutzer hat die Verbindung getrennt:", socket.id);
   });
 });
+
+server.listen(PORT, () => console.log(`Backend läuft auf Port ${PORT}`));
