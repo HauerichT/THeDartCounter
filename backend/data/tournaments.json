@@ -1,1 +1,478 @@
-[]
+[
+  {
+    "id": 1742223869911,
+    "mode": "Liga-System",
+    "board1SocketId": "JmvRnn9YzhzjYxD-AAAF",
+    "board2SocketId": "uE3YBocfR8LqoDg8AAAH",
+    "players": [
+      {
+        "id": 2,
+        "name": "Jannis"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 6,
+        "name": "Carsten K."
+      },
+      {
+        "id": 8,
+        "name": "Turbo"
+      },
+      {
+        "id": 10,
+        "name": "Tober"
+      },
+      {
+        "id": 12,
+        "name": "Ernst"
+      }
+    ],
+    "legsLiga": 1,
+    "pointsLiga": 501,
+    "matches": [
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 12,
+          "name": "Ernst"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 12,
+          "name": "Ernst"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 12,
+          "name": "Ernst"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 12,
+          "name": "Ernst"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 12,
+          "name": "Ernst"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      }
+    ],
+    "status": "Ligaphase"
+  },
+  {
+    "id": 1742224150606,
+    "mode": "Liga-System",
+    "board1SocketId": "NzlvSgrOfu8lARWEAAAJ",
+    "board2SocketId": "FiD45mfVKTvN1h1pAAAL",
+    "players": [
+      {
+        "id": 2,
+        "name": "Jannis"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 7,
+        "name": "Carsten W."
+      },
+      {
+        "id": 9,
+        "name": "Ralf"
+      },
+      {
+        "id": 10,
+        "name": "Tober"
+      },
+      {
+        "id": 13,
+        "name": "Fridde"
+      }
+    ],
+    "legsLiga": 1,
+    "pointsLiga": 501,
+    "matches": [
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 13,
+          "name": "Fridde"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 501,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 13,
+          "name": "Fridde"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 13,
+          "name": "Fridde"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 13,
+          "name": "Fridde"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 13,
+          "name": "Fridde"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "board": null,
+        "winner": null,
+        "running": false
+      }
+    ],
+    "status": "Ligaphase"
+  }
+]

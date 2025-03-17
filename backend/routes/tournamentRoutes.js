@@ -68,25 +68,24 @@ module.exports = (io) => {
   });
 
   router.get(
-    "/getTournamentStageMatches/:tournamentId/:socketId",
+    "/getTournamentMatch/:tournamentId/:socketId",
     async (req, res) => {
       try {
-        const stageMatches =
-          await tournamentController.getTournamentStageMatches(
-            req.params.tournamentId,
-            req.params.socketId
-          );
+        const match = await tournamentController.getTournamentMatch(
+          req.params.tournamentId,
+          req.params.socketId
+        );
 
         res.json({
           success: true,
-          message: "Spiele der aktuellen Phase erfolgreich abgerufen!",
-          data: stageMatches,
+          message: "Spiel erfolgreich abgerufen!",
+          data: match,
         });
       } catch (err) {
-        console.error("Fehler beim Abrufen der aktuellen Spiele:", err);
+        console.error("Fehler beim Abrufen des nächsten Spiels:", err);
         res.json({
           success: false,
-          message: "Fehler beim Abrufen der aktuellen Spiele!",
+          message: "Fehler beim Abrufen des nächsten Spiels!",
           data: err,
         });
       }

@@ -20,8 +20,6 @@ export interface MatchScores {
 
 export interface MatchProps {
   matchData: MatchData;
-  points: number;
-  legs: number;
   starter: Player;
   onFinishedMatch: (matchData: MatchData) => void;
 }

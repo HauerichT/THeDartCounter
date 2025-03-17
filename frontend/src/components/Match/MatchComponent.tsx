@@ -12,14 +12,12 @@ import MatchHeaderComponent from "./MatchHeaderComponent";
 
 export default function MatchComponent({
   matchData,
-  points,
-  legs,
   starter,
   onFinishedMatch,
 }: MatchProps) {
   const { player1, player2 } = matchData;
-  const [player1Points, setPlayer1Points] = useState<number>(points);
-  const [player2Points, setPlayer2Points] = useState<number>(points);
+  const [player1Points, setPlayer1Points] = useState<number>(matchData.points);
+  const [player2Points, setPlayer2Points] = useState<number>(matchData.points);
   const [player1Legs, setPlayer1Legs] = useState<number>(0);
   const [player2Legs, setPlayer2Legs] = useState<number>(0);
   const [player1Darts, setPlayer1Darts] = useState<number>(0);
@@ -32,8 +30,8 @@ export default function MatchComponent({
   const { dialog, setDialog, showDialog } = useDialog();
 
   const resetGame = () => {
-    setPlayer1Points(points);
-    setPlayer2Points(points);
+    setPlayer1Points(matchData.points);
+    setPlayer2Points(matchData.points);
     setPlayer1Legs(0);
     setPlayer2Legs(0);
     setCurrentLeg(1);
@@ -113,8 +111,8 @@ export default function MatchComponent({
   };
 
   const resetLeg = () => {
-    setPlayer1Points(points);
-    setPlayer2Points(points);
+    setPlayer1Points(matchData.points);
+    setPlayer2Points(matchData.points);
     setCurrentLeg((prev) => prev + 1);
     setCurrentPlayerId(
       currentLeg % 2 === 0
@@ -159,18 +157,18 @@ export default function MatchComponent({
   };
 
   useEffect(() => {
-    if (player1Legs === legs) {
+    if (player1Legs === matchData.legs) {
       handleResult(player1);
-    } else if (player2Legs === legs) {
+    } else if (player2Legs === matchData.legs) {
       handleResult(player2);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player1Legs, player2Legs, legs]);
+  }, [player1Legs, player2Legs, matchData.legs]);
 
   return (
     <>
       <CustomDialogComponent dialog={dialog} setDialog={setDialog} />
-      <MatchHeaderComponent legs={legs} />
+      <MatchHeaderComponent legs={matchData.legs} />
       <MatchPlayerBoxComponent
         player={player1}
         playerLegs={player1Legs}
