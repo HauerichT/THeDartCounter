@@ -100,11 +100,23 @@ export async function postFinishedTournamentMatch(
   }
 }
 
-export async function getTournamentGroupStageRanking(tournamentId: number) {
+export async function getTournamentRanking(tournamentId: number) {
   try {
     const socketId = socket.id;
     const response = await axios.get(
-      `${API_URL}/api/tournaments//getTournamentGroupStageRanking/${tournamentId}/${socketId}`
+      `${API_URL}/api/tournaments/getTournamentRanking/${tournamentId}/${socketId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(String(error));
+  }
+}
+
+export async function getTournamentMatches(tournamentId: number) {
+  try {
+    const socketId = socket.id;
+    const response = await axios.get(
+      `${API_URL}/api/tournaments/getTournamentMatches/${tournamentId}/${socketId}`
     );
     return response.data;
   } catch (error) {

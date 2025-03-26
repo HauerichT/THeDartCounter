@@ -197,11 +197,11 @@ module.exports = (io) => {
   );
 
   router.get(
-    "/getTournamentGroupStageRanking/:tournamentId/:socketId",
+    "/getTournamentRanking/:tournamentId/:socketId",
     async (req, res) => {
       try {
-        const tournamentGroupStageRanking =
-          await tournamentController.getTournamentGroupStageRanking(
+        const tournamentRanking =
+          await tournamentController.getTournamentRanking(
             req.params.tournamentId,
             req.params.socketId
           );
@@ -209,13 +209,38 @@ module.exports = (io) => {
         res.json({
           success: true,
           message: "Aktuelle Tabelle erfolgreich abgerufen!",
-          data: tournamentGroupStageRanking,
+          data: tournamentRanking,
         });
       } catch (err) {
         console.error("Fehler beim Abrufen der aktuellen Tabelle:", err);
         res.json({
           success: false,
           message: "Fehler beim Abrufen der aktuellen Tabelle!",
+          data: err,
+        });
+      }
+    }
+  );
+
+  router.get(
+    "/getTournamentMatches/:tournamentId/:socketId",
+    async (req, res) => {
+      try {
+        const tournamentMatches =
+          await tournamentController.getTournamentMatches(
+            req.params.tournamentId,
+            req.params.socketId
+          );
+        res.json({
+          success: true,
+          message: "Aktuelle Spiele erfolgreich abgerufen!",
+          data: tournamentMatches,
+        });
+      } catch (err) {
+        console.error("Fehler beim Abrufen der aktuellen Spiele:", err);
+        res.json({
+          success: false,
+          message: "Fehler beim Abrufen der aktuellen Spiele!",
           data: err,
         });
       }

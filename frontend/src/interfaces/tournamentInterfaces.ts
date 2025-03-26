@@ -32,8 +32,9 @@ export interface Tournament {
   players: { length: number };
 }
 
-export interface TournamentGroupStageRanking {
+export interface TournamentRanking {
   id: number;
   name: string;
   wins: number;
+  rankingScore: number;
 }

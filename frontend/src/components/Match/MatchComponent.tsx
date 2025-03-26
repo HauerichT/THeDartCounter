@@ -24,6 +24,8 @@ export default function MatchComponent({
   const [player2Darts, setPlayer2Darts] = useState<number>(0);
   const [player1ScoreTotal, setPlayer1ScoreTotal] = useState<number>(0);
   const [player2ScoreTotal, setPlayer2ScoreTotal] = useState<number>(0);
+  const [player1RankingScore, setPlayer1RankingScore] = useState<number>(0);
+  const [player2RankingScore, setPlayer2RankingScore] = useState<number>(0);
   const [currentPlayerId, setCurrentPlayerId] = useState<number>(starter.id);
   const [currentLeg, setCurrentLeg] = useState<number>(1);
   const [scores, setScores] = useState<MatchScores[]>([]);
@@ -43,6 +45,8 @@ export default function MatchComponent({
     const updatedMatch: MatchData = {
       ...matchData,
       winner,
+      player1RankingScore,
+      player2RankingScore,
     };
 
     showDialog(
@@ -84,8 +88,12 @@ export default function MatchComponent({
     if (newPoints === 0) {
       if (isPlayer1) {
         setPlayer1Legs((prev) => prev + 1);
+        setPlayer1RankingScore((prev) => prev + player2Points);
+        setPlayer2RankingScore((prev) => prev - player2Points);
       } else {
         setPlayer2Legs((prev) => prev + 1);
+        setPlayer2RankingScore((prev) => prev + player1Points);
+        setPlayer1RankingScore((prev) => prev - player1Points);
       }
       resetLeg();
     } else {
@@ -104,6 +112,8 @@ export default function MatchComponent({
         player2points: player2Points,
         player1score: isPlayer1 ? score : null,
         player2score: isPlayer1 ? null : score,
+        player1RankingScore: player1RankingScore,
+        player2RankingScore:  player2RankingScore,
         winner: newPoints === 0,
         currentPlayerId,
       },
@@ -132,6 +142,8 @@ export default function MatchComponent({
     setScores(newScores);
     setPlayer1Points(lastScore.player1points);
     setPlayer2Points(lastScore.player2points);
+    setPlayer1RankingScore(lastScore.player1RankingScore);
+    setPlayer2RankingScore(lastScore.player2RankingScore);
     setCurrentPlayerId(lastScore.currentPlayerId);
 
     if (lastScore.player1score !== null) {
