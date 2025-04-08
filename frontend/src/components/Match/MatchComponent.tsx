@@ -113,7 +113,7 @@ export default function MatchComponent({
         player1score: isPlayer1 ? score : null,
         player2score: isPlayer1 ? null : score,
         player1RankingScore: player1RankingScore,
-        player2RankingScore:  player2RankingScore,
+        player2RankingScore: player2RankingScore,
         winner: newPoints === 0,
         currentPlayerId,
       },

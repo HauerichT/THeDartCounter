@@ -93,7 +93,6 @@ export default function TournamentPage() {
       showDialog(resTournamentMatch.message, "error");
       return;
     }
-    console.log("FETCH", resTournamentMatch.data);
     setMatch(resTournamentMatch.data);
   };
 
@@ -105,12 +104,10 @@ export default function TournamentPage() {
       showDialog(resTournamentRanking.message, "error");
       return;
     }
-    console.log("RANKING", resTournamentRanking.data);
     setRanking(resTournamentRanking.data);
   };
 
   const handleMatchFinished = async (matchData: MatchData) => {
-    console.log("FINISHED", matchData);
     const resPostFinishedMatch = await postFinishedTournamentMatch(
       Number(tournamentId),
       matchData
@@ -165,32 +162,33 @@ export default function TournamentPage() {
             Warten auf nächstes Match...
           </Typography>
         )}
-        {tournamentStatus === TournamentStatus.GROUP_STAGE && (
-          <>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
-              <Box
-                p={2}
-                boxShadow={2}
-                borderRadius={2}
-                bgcolor="background.paper"
-              >
-                <TournamentRankingComponent ranking={ranking} />
-              </Box>
-            </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
-              <Box
-                p={2}
-                boxShadow={2}
-                borderRadius={2}
-                bgcolor="background.paper"
-              >
-                <TournamentMatchesWithResultComponent
-                  matchesWithResult={allMatches || []}
-                />
-              </Box>
-            </Grid2>
-          </>
-        )}
+        {tournamentStatus === TournamentStatus.GROUP_STAGE ||
+          (tournamentStatus === TournamentStatus.LIGA_STAGE && (
+            <>
+              <Grid2 size={{ xs: 12, sm: 6 }}>
+                <Box
+                  p={2}
+                  boxShadow={2}
+                  borderRadius={2}
+                  bgcolor="background.paper"
+                >
+                  <TournamentRankingComponent ranking={ranking} />
+                </Box>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 6 }}>
+                <Box
+                  p={2}
+                  boxShadow={2}
+                  borderRadius={2}
+                  bgcolor="background.paper"
+                >
+                  <TournamentMatchesWithResultComponent
+                    matchesWithResult={allMatches || []}
+                  />
+                </Box>
+              </Grid2>
+            </>
+          ))}
       </Container>
     </>
   );

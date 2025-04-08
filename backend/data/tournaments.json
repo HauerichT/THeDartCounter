@@ -1,1 +1,749 @@
-[]
+[
+  {
+    "id": 1744096810425,
+    "mode": "Liga-System",
+    "board1SocketId": "meSK9bd5WA86bxidAAAF",
+    "board2SocketId": "dCj0YLpSHwGAoSx7AAAH",
+    "players": [
+      {
+        "id": 1,
+        "name": "Timo"
+      },
+      {
+        "id": 2,
+        "name": "Jannis"
+      },
+      {
+        "id": 3,
+        "name": "Fynn"
+      },
+      {
+        "id": 4,
+        "name": "Luca"
+      },
+      {
+        "id": 5,
+        "name": "Janis"
+      },
+      {
+        "id": 6,
+        "name": "Carsten K."
+      },
+      {
+        "id": 7,
+        "name": "Carsten W."
+      },
+      {
+        "id": 8,
+        "name": "Turbo"
+      },
+      {
+        "id": 9,
+        "name": "Ralf"
+      },
+      {
+        "id": 10,
+        "name": "Tober"
+      }
+    ],
+    "legsLiga": 1,
+    "pointsLiga": 301,
+    "matches": [
+      {
+        "player1": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player1RankingScore": 201,
+        "player2RankingScore": -201,
+        "board": null,
+        "winner": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "running": false,
+        "points": 301,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player1RankingScore": 282,
+        "player2RankingScore": -282,
+        "board": null,
+        "winner": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "running": false,
+        "points": 301,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 301,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player1RankingScore": 180,
+        "player2RankingScore": -180,
+        "board": null,
+        "winner": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "running": false,
+        "points": 301,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": true,
+        "points": 301,
+        "legs": 1
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player2": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player2": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player2": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 1,
+          "name": "Timo"
+        },
+        "player2": {
+          "id": 2,
+          "name": "Jannis"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 3,
+          "name": "Fynn"
+        },
+        "player2": {
+          "id": 10,
+          "name": "Tober"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 4,
+          "name": "Luca"
+        },
+        "player2": {
+          "id": 9,
+          "name": "Ralf"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 5,
+          "name": "Janis"
+        },
+        "player2": {
+          "id": 8,
+          "name": "Turbo"
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      },
+      {
+        "player1": {
+          "id": 6,
+          "name": "Carsten K."
+        },
+        "player2": {
+          "id": 7,
+          "name": "Carsten W."
+        },
+        "player1RankingScore": 0,
+        "player2RankingScore": 0,
+        "board": null,
+        "winner": null,
+        "running": false
+      }
+    ],
+    "status": "Ligaphase"
+  }
+]

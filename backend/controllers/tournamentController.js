@@ -417,6 +417,11 @@ const getTournamentMatches = async (tournamentId, socketId) => {
   const data = await fs.readFile(tournamentsFilePath, "utf8");
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
+
+  if (tournament.mode === TournamentMode.LIGA) {
+    return tournament.matches;
+  }
+
   const currentBoard = tournament.board1SocketId === socketId ? 1 : 2;
   const matches = tournament.matches.groupStage.filter(
     (match) => match.board === currentBoard
@@ -429,6 +434,13 @@ const getTournamentRanking = async (tournamentId, socketId) => {
   let tournaments = JSON.parse(data);
   const tournament = tournaments.find((t) => t.id === Number(tournamentId));
 
+  if (tournament.mode === TournamentMode.LIGA) {
+    const table = await calculateTournamentGroupRanking(
+      tournament.matches,
+      tournament.players
+    );
+    return table;
+  }
   const matchesGroup1 = tournament.matches.groupStage.filter(
     (match) => match.board === 1
   );
