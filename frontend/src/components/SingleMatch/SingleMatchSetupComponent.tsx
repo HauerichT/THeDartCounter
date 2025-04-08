@@ -59,6 +59,8 @@ export default function SingleMatchSetupComponent({
       legs,
       starter: starter || player1,
       winner: null,
+      player1RankingScore: 0,
+      player2RankingScore: 0,
     });
   }
 

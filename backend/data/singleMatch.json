@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "player1": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "player2": {
+      "id": 8,
+      "name": "Turbo"
+    },
+    "winner": {
+      "id": 3,
+      "name": "Fynn"
+    },
+    "points": 501,
+    "legs": 1,
+    "date": 1742991336655
+  }
+]

@@ -7,12 +7,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { TournamentGroupStageRanking } from "../../interfaces/tournamentInterfaces";
+import { TournamentRanking } from "../../interfaces/tournamentInterfaces";
 
 export default function TournamentRankingComponent({
   ranking,
 }: {
-  ranking: TournamentGroupStageRanking[];
+  ranking: TournamentRanking[];
 }) {
   return (
     <Container maxWidth={false}>
@@ -23,6 +23,7 @@ export default function TournamentRankingComponent({
               <TableCell>Platz</TableCell>
               <TableCell>Spieler</TableCell>
               <TableCell>Siege</TableCell>
+              <TableCell>Verbleibende Punkte</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -32,6 +33,7 @@ export default function TournamentRankingComponent({
                   <TableCell>{ranking.indexOf(player) + 1}</TableCell>
                   <TableCell>{player.name}</TableCell>
                   <TableCell>{player.wins}</TableCell>
+                  <TableCell>{player.rankingScore}</TableCell>
                 </TableRow>
               ))
             ) : (
